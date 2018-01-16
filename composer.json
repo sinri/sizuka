@@ -1,0 +1,17 @@
+{
+  "name": "sinri/sizuka",
+  "description": "a website for resource",
+  "type": "project",
+  "require": {
+    "sinri/enoch": "^2.2",
+    "aliyuncs/oss-sdk-php": "~2.0"
+  },
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Sinri Edogawa",
+      "email": "e.joshua.s.e@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable"
+}
