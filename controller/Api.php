@@ -9,7 +9,9 @@
 namespace sinri\sizuka\controller;
 
 
+use sinri\enoch\core\LibRequest;
 use sinri\enoch\mvc\SethController;
+use sinri\sizuka\library\AliyunOSSLibrary;
 
 class Api extends SethController
 {
@@ -18,8 +20,21 @@ class Api extends SethController
         parent::__construct($initData);
     }
 
-    public function explorer($path)
+    public function setToken($token = 'sizuka')
     {
+        setcookie("sizuka_token", $token);
+    }
+
+    public function explorer()
+    {
+        $path = LibRequest::getRequest("path", '');
         //TODO: find sub objects
+        try {
+            $list = (new AliyunOSSLibrary())->listObjects($path);
+            $tree = (new AliyunOSSLibrary())->makeObjectTree($list);
+            $this->_sayOK(['list' => $list, 'tree' => $tree]);
+        } catch (\Exception $exception) {
+            $this->_sayFail($exception->getMessage());
+        }
     }
 }

@@ -9,6 +9,7 @@
 namespace sinri\sizuka;
 
 
+use sinri\enoch\core\LibLog;
 use sinri\enoch\helper\CommonHelper;
 use sinri\sizuka\library\AliyunOSSLibrary;
 
@@ -66,5 +67,20 @@ class Sizuka
     {
         http_response_code($code);
         echo $error;
+    }
+
+    private static $logger = null;
+
+    /**
+     * @param $level
+     * @param $message
+     * @param string $object
+     */
+    public static function log($level, $message, $object = '')
+    {
+        if (!self::$logger) {
+            self::$logger = new LibLog(self::config(['log', 'dir'], __DIR__ . '/log'));
+        }
+        self::$logger->log($level, $message, $object);
     }
 }

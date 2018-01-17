@@ -1,3 +1,5 @@
 vendor/
 /config/config.php
 /.htaccess
+/debug/
+/log/

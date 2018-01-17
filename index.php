@@ -37,12 +37,20 @@ if (strpos($path, '/proxy/') === 0) {
     // proxy
     \sinri\sizuka\Sizuka::oss($path);
 } else {
+    //setcookie("sizuka_token",'sizuka');
     $lamech = new \sinri\enoch\mvc\Lamech();
 
     $lamech->getRouter()->setErrorHandler(function ($err_data) {
         header("Content-Type: application/json");
         \sinri\enoch\core\LibResponse::jsonForAjax(\sinri\enoch\core\LibResponse::AJAX_JSON_CODE_FAIL, $err_data);
     });
+
+    $lamech->getRouter()->loadAllControllersInDirectoryAsCI(
+        __DIR__ . '/controller',
+        '',
+        '\sinri\sizuka\controller\\',
+        \sinri\sizuka\middleware\SizukaMiddleware::class
+    );
 
     //$start = microtime(true);
 

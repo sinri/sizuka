@@ -10,6 +10,7 @@ namespace sinri\sizuka\library;
 
 use OSS\Core\OssException;
 use OSS\OssClient;
+use sinri\enoch\core\LibLog;
 use sinri\sizuka\Sizuka;
 
 class AliyunOSSLibrary
@@ -19,9 +20,10 @@ class AliyunOSSLibrary
 
     /**
      * AliyunOSSLibrary constructor.
+     * @param null $bucket
      * @throws OssException
      */
-    public function __construct($bucket)
+    public function __construct($bucket = null)
     {
         $accessKeyId = Sizuka::config(['oss', 'AccessKeyId']);//"<您从OSS获得的AccessKeyId>";
         $accessKeySecret = Sizuka::config(['oss', 'AccessKeySecret']);//"<您从OSS获得的AccessKeySecret>";
@@ -29,6 +31,9 @@ class AliyunOSSLibrary
         $this->oss = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
         if (!$this->oss) {
             throw new OssException("oss client failed to be created");
+        }
+        if ($bucket === null) {
+            $bucket = Sizuka::config(['oss', 'bucket']);
         }
         $this->bucket = $bucket;
     }
@@ -63,7 +68,7 @@ class AliyunOSSLibrary
         }
     }
 
-    public function listObjectCall($prefix = '')
+    public function listObjects($prefix = '')
     {
         try {
             $list = [];
@@ -103,6 +108,34 @@ class AliyunOSSLibrary
         }
     }
 
+    public function makeObjectTree($list)
+    {
+//        $tree=[];
+//        foreach ($list as $item){
+//            $components=explode("/",$item);
+//            $last_component=$components[count($components)-1];
+//            $dir_link=$components;
+//            unset($dir_link[count($dir_link)-1]);
+//            $dir_existed=CommonHelper::safeReadNDArray($tree,$dir_link,[]);
+//            if($last_component===''){
+//                // is a directory
+//                if(empty($dir_existed)){
+//                    CommonHelper::safeWriteNDArray($tree,$dir_link,$dir_existed);
+//                }
+//            }else{
+//                $dir_existed[]=$last_component;
+//                CommonHelper::safeWriteNDArray($tree,$dir_link,$dir_existed);
+//            }
+//        }
+
+        $tree = new OSSObjectTreeNode("ROOT//", true);
+        foreach ($list as $item) {
+            $tree->rootLoadItem($item);
+        }
+
+        return $tree;
+    }
+
     /**
      * @param $object
      * @param int $timeout
@@ -115,6 +148,9 @@ class AliyunOSSLibrary
         }
 
         $meta = $this->oss->getObjectMeta($this->bucket, $object);
+
+        Sizuka::log(LibLog::LOG_INFO, "meta of object: " . $object, $meta);
+
         $content_type = $meta['content-type'];
         $content_length = $meta['content-length'];
 
@@ -128,10 +164,10 @@ class AliyunOSSLibrary
 
         //需要用到的头
         header("Content-Type: " . $content_type);
-        //header("Accept-Ranges: bytes");
-        //header("Accept-Length:" . $content_type);
-        //header("Content-Disposition: attachment; filename=" . $down_name);
-        header("Content-Type: " . $content_length);
+        header("Content-Length: " . $content_length);
+
+        Sizuka::log(LibLog::LOG_INFO, "proxy header list for object: " . $object, headers_list());
+
         $buffer = 1024;
         $file_count = 0;
         //向浏览器返回数据
