@@ -19,6 +19,6 @@ class SizukaMiddleware extends MiddlewareInterface
         if ($_COOKIE['sizuka_token'] === Sizuka::config(['token'], rand(10000, 99999))) {
             return true;
         }
-        return false;
+        return !false;
     }
 }

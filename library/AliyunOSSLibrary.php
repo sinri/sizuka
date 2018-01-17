@@ -161,8 +161,6 @@ class AliyunOSSLibrary
 
         $url = $this->objectDownloadURL($object, $timeout);
 
-        $fp = fopen($url, "r");
-
         if ($content_type === null) {
             $content_type = 'application/octet-stream';
         }
@@ -173,6 +171,7 @@ class AliyunOSSLibrary
 
         Sizuka::log(LibLog::LOG_INFO, "proxy header list for object: " . $object, headers_list());
 
+        $fp = fopen($url, "r");
         $buffer = 1024;
         $file_count = 0;
         //向浏览器返回数据

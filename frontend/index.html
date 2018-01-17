@@ -22,7 +22,10 @@
                     <h1>Sizuka - Aliyun OSS Static Content Services</h1>
                 </i-col>
                 <i-col span="6" style="text-align: right">
-                    <i-button v-on:click="setToken">Identity Setting</i-button>
+                    <i-button v-on:click="setToken">
+                        <template v-if="token_written">Logout</template>
+                        <template v-else>Login</template>
+                    </i-button>
                 </i-col>
             </Row>
         </i-col>
@@ -49,7 +52,7 @@
                         Update
                     </i-button>
                     &nbsp;&nbsp;
-                    <i-button icon="ios-search" v-on:click="explore(false)">Refresh</i-button>
+                    <!--<i-button icon="ios-search" v-on:click="explore(false)">Refresh</i-button>-->
                 </i-col>
             </Row>
             <Row>
@@ -58,8 +61,38 @@
                 </i-col>
             </Row>
             <Row>
-                <i-col span="24">
-                    <Tree :data="object_tree" @on-select-change="open_object"></Tree>
+                <i-col :span="tree_span" style="overflow: auto;padding-right: 10px">
+                    <Card style="width: 100%;min-height: 543px;" v-show="tree_switch">
+                        <div slot="title">
+                            <div style="float: left">Contents</div>
+                            <div style="float: right">
+                                <i-button size="small" icon="ios-search" v-on:click="explore(false)">Refresh</i-button>
+                            </div>
+                            <div style="clear: both"></div>
+                        </div>
+                        <Tree :data="object_tree" @on-select-change="open_object"></Tree>
+                    </Card>
+                </i-col>
+                <i-col :span="preview_span">
+                    <Card style="width: 100%;min-height: 500px;">
+                        <div slot="title">
+                            <i-switch v-model="tree_switch" @on-change="change_tree_switch">
+                                <span slot="open"><Icon type="android-arrow-back"></Icon></span>
+                                <span slot="close"><Icon type="android-arrow-forward"></Icon></span>
+                            </i-switch>
+                            <!--<i-button v-on:click="change_tree_switch">-->
+                            <!--<template v-if="tree_switch">Hide</template>-->
+                            <!--<template v-else>Show</template>-->
+                            <!--</i-button>-->
+                            <Icon type="easel"></Icon>
+                            Preview
+                        </div>
+                        <a href="#" slot="extra" @click.prevent="open_content">
+                            <Icon type="arrow-expand"></Icon>
+                            Open in new tab!
+                        </a>
+                        <iframe v-bind:src="preview_url" style="border: none;width:100%;min-height:450px;"></iframe>
+                    </Card>
                 </i-col>
             </Row>
         </i-col>
@@ -86,6 +119,11 @@
             path_input: '',
             object_tree: [],
             message: '',
+            preview_url: '',
+            tree_switch: true,
+            tree_span: 8,
+            preview_span: 16,
+            token_written: false,
         },
         methods: {
             explore: function (ignore_cache) {
@@ -112,22 +150,50 @@
                 }
             },
             open_object: function (node) {
-                console.log("open_object", node[0].path);
-                window.open("../proxy/" + node[0].path);
+                this.preview_url = "../proxy/" + node[0].path + (node[0].path.substr(-1) === '/' ? 'index.html' : '');
+                console.log("open_object", this.preview_url);
+                //window.open("../proxy/" + node[0].path);
+            },
+            open_content: function () {
+                window.open(this.preview_url);
+            },
+            change_tree_switch: function () {
+                // this.tree_switch=!this.tree_switch;
+                if (this.tree_switch) {
+                    this.tree_span = 8;
+                    this.preview_span = 16;
+                } else {
+                    this.tree_span = 0;
+                    this.preview_span = 24;
+                }
             },
             setToken: function () {
-                let token = prompt("Set your identity token here. If you want to clean the token, just leave this empty and confirm.");
-                if (token === '') {
+                this.update_token_written();
+                if (this.token_written) {
                     Cookies.remove('sizuka_token');
                 } else {
-                    Cookies.set('sizuka_token', token, {expires: 1});
+                    let token = prompt("Set your identity token below");
+                    if (token === '') {
+                        alert('Empty string received, you are still not login!');
+                    } else {
+                        Cookies.set('sizuka_token', token, {expires: 1});
+                        this.explore();
+                    }
                 }
+                this.update_token_written();
+            },
+            update_token_written: function () {
+                let token = Cookies.get("sizuka_token");
+                this.token_written = !!token;
             }
         },
         mounted: function () {
+            this.update_token_written();
             this.path = "";
             this.path_input = "";
-            this.explore();
+            if (this.token_written) {
+                this.explore();
+            }
         },
     })
 </script>

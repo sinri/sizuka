@@ -96,11 +96,11 @@ class OSSObjectTreeNode
     public function toJsonObject()
     {
         $title = $this->objectName;
-        $title .= " - - - ";
-        $title .= number_format(1.0 * $this->metaSize) . ' bytes ~ ';
-        if ($this->metaLastModified !== 'Unknown') {
-            $title .= " since " . (new \DateTime($this->metaLastModified))->format('Y-m-d H:i:s');
-        }
+//        $title .= " - - - ";
+//        $title .= number_format(1.0 * $this->metaSize) . ' bytes ~ ';
+//        if ($this->metaLastModified !== 'Unknown') {
+//            $title .= " since " . (new \DateTime($this->metaLastModified))->format('Y-m-d H:i:s');
+//        }
         $json = [
             "title" => $title,
             "expand" => $this->expand,
