@@ -45,6 +45,10 @@ if (strpos($path, '/proxy/') === 0) {
         \sinri\enoch\core\LibResponse::jsonForAjax(\sinri\enoch\core\LibResponse::AJAX_JSON_CODE_FAIL, $err_data);
     });
 
+    $lamech->getRouter()->any("", function () {
+        header("Location: ./frontend/index.html");
+    });
+
     $lamech->getRouter()->loadAllControllersInDirectoryAsCI(
         __DIR__ . '/controller',
         '',
