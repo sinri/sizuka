@@ -11,7 +11,8 @@ One goddess previously worked in NetEase who is currently working on the system 
 
 ## Deploy
 
-1. Clone this repo, or download project as zip.
+1. Clone this repo, or download project.
+1. Run `./composer.phar install` in the project directory.
 1. Create a configuration file `config/config.php`. Sample is given as `config/config.sample.php`.
 1. Make the cache directory and the log directory writable.
 1. Configure the server.
