@@ -94,7 +94,12 @@ class AliyunOSSLibrary
                     break;
                 }
                 foreach ($object_list as $key => $item) {
-                    $list[] = $item->getKey();
+                    $list[] = [
+                        "key" => $item->getKey(),
+                        "last_modified" => $item->getLastModified(),
+                        "size" => $item->getSize(),
+                        "type" => $item->getType(),
+                    ];
                 }
                 if ($result->getIsTruncated()) {
                     break;

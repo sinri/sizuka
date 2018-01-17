@@ -11,6 +11,7 @@ namespace sinri\sizuka;
 
 use sinri\enoch\core\LibLog;
 use sinri\enoch\helper\CommonHelper;
+use sinri\enoch\service\FileCache;
 use sinri\sizuka\library\AliyunOSSLibrary;
 
 class Sizuka
@@ -82,5 +83,18 @@ class Sizuka
             self::$logger = new LibLog(self::config(['log', 'dir'], __DIR__ . '/log'));
         }
         self::$logger->log($level, $message, $object);
+    }
+
+    private static $file_cache = null;
+
+    /**
+     * @return null|FileCache
+     */
+    public static function getCacheAgent()
+    {
+        if (!self::$file_cache) {
+            self::$file_cache = new FileCache(self::config(['cache', 'dir'], __DIR__ . '/cache'));
+        }
+        return self::$file_cache;
     }
 }

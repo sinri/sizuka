@@ -32,18 +32,24 @@
         <i-col span="2">&nbsp;</i-col>
         <i-col span="20" style="padding: 20px;border-bottom: 1px solid gray;">
             <Row style="margin: 20px 0">
-                <i-col span="18">
-                    <h2>Explorer
-                        <small>{{path}}</small>
+                <i-col span="12">
+                    <h2>
+                        Explorer
+                        &nbsp;&nbsp;
+                        <small>Cached on {{cache_time}}</small>
                     </h2>
                 </i-col>
-                <i-col span="6" style="text-align: right">
+                <i-col span="12" style="text-align: right">
                     <!--
                     <i-input v-model="path_input">
                         <i-button slot="append" icon="ios-search" v-on:click="explore"></i-button>
                     </i-input>
                     -->
-                    <i-button icon="ios-search" v-on:click="explore">Refresh</i-button>
+                    <i-button type="ghost" icon="refresh" v-on:click="explore(true)" style="display: inline-block">Force
+                        Update
+                    </i-button>
+                    &nbsp;&nbsp;
+                    <i-button icon="ios-search" v-on:click="explore(false)">Refresh</i-button>
                 </i-col>
             </Row>
             <Row>
@@ -75,17 +81,17 @@
     let app = new Vue({
         el: '#app',
         data: {
+            cache_time: '',
             path: '',
             path_input: '',
             object_tree: [],
             message: '',
         },
         methods: {
-            explore: function () {
+            explore: function (ignore_cache) {
                 if (Cookies.get("sizuka_token")) {
                     axios.get(
-                        '../Api/explorer',
-                        {path: this.path_input}
+                        '../Api/explorer?force_update=' + (ignore_cache ? 'YES' : 'NO')
                     ).then((res) => {
                         console.log('success', res);
                         if (res.data.code !== 'OK') {
@@ -94,6 +100,7 @@
                         } else {
                             let tree = res.data.data.tree;
                             this.object_tree = tree.children;
+                            this.cache_time = res.data.data.cache_time;
                             this.message = '';
                         }
                     }).catch((res) => {

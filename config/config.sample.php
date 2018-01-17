@@ -6,8 +6,16 @@
  * Time: 21:25
  */
 
-$config['gateway'] = 'http://localhost/PHPStorm/sizuka';
+/*
+ * Commonly it should be empty.
+ * However, for develop purpose, it might record the prefix to the web root.
+ * http://localhost/PHPStorm/sizuka -> /PHPStorm/sizuka
+ */
+$config['gateway'] = '/PHPStorm/sizuka';
 
+/**
+ * The Aliyun OSS Access Configuration
+ */
 $config['oss'] = [
     'AccessKeyId' => '?',
     'AccessKeySecret' => '?',
@@ -18,4 +26,17 @@ $config['oss'] = [
     'bucket' => 'tata-design',
 ];
 
+/**
+ * The token set to cookie to pass the middleware.
+ */
 $config['token'] = 'token';
+
+/**
+ * The logging configuration
+ */
+$config['log']['dir'] = __DIR__ . '/log';
+
+/**
+ * The cache configuration
+ */
+$config['cache']['dir'] = __DIR__ . '/cache';

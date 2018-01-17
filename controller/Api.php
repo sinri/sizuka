@@ -12,6 +12,7 @@ namespace sinri\sizuka\controller;
 use sinri\enoch\core\LibRequest;
 use sinri\enoch\mvc\SethController;
 use sinri\sizuka\library\AliyunOSSLibrary;
+use sinri\sizuka\Sizuka;
 
 class Api extends SethController
 {
@@ -27,12 +28,21 @@ class Api extends SethController
 
     public function explorer()
     {
-        $path = LibRequest::getRequest("path", '');
-        //TODO: find sub objects
+        $force_update = LibRequest::getRequest("force_update", 'NO');
+        $path = '';//LibRequest::getRequest("path", '');
+        // find sub objects
         try {
-            $list = (new AliyunOSSLibrary())->listObjects($path);
-            $tree = (new AliyunOSSLibrary())->makeObjectTree($list);
-            $this->_sayOK(['list' => $list, 'tree' => $tree]);
+            $result = Sizuka::getCacheAgent()->getObject("object_tree");
+            if (empty($result) || $force_update === 'YES') {
+                $list = (new AliyunOSSLibrary())->listObjects($path);
+                $tree = (new AliyunOSSLibrary())->makeObjectTree($list);
+                $result = [
+                    "tree" => $tree->toJsonObject(),
+                    "cache_time" => date('Y-m-d H:i:s'),
+                ];
+                Sizuka::getCacheAgent()->saveObject("object_tree", $result, 60 * 10);
+            }
+            $this->_sayOK($result);
         } catch (\Exception $exception) {
             $this->_sayFail($exception->getMessage());
         }
