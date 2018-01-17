@@ -1,13 +1,17 @@
 # Sizuka
 
-A static file storage and render system.
+Aliyun OSS Static Content Services 
 
-## Background
+## Introduction
 
 One goddess previously worked in NetEase who is currently working on the system design, recently raised a requirement:
 
 1. Designer can upload files and directories, such as sketch works or demo HTML sites;
 1. Those had been permitted could view the contents as if tho FTP, and open any files as if tho HTTP.
+
+To resolve this, I use Aliyun OSS as content storage, as required I have to set the bucket as private.
+So I have to provide a service to check user identity and give content to them.
+Sizuka is designed for this purpose.
 
 ## Deploy
 
