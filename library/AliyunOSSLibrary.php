@@ -163,6 +163,19 @@ class AliyunOSSLibrary
         $content_type = $meta['content-type'];
         $content_length = $meta['content-length'];
 
+        if ($content_type === 'application/octet-stream') {
+//            if(preg_match('/\.[Mm][Pp]3$/',$object)){
+//                $content_type='audio/mp3';
+//            }
+//            if(preg_match('/\.([Mm][Pp]4|[Mm][Pp][Ee][Gg])$/',$object)){
+//                $content_type='audio/mpeg';
+//            }
+//            if(preg_match('/\.[Mm]4[Aa]$/',$object)){
+//                $content_type='audio/mpeg';
+//            }
+            $content_type = mime_content_type($object);
+        }
+
         $url = $this->objectDownloadURL($object, $timeout);
 
         if ($content_type === null) {
