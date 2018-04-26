@@ -183,7 +183,7 @@ class AliyunOSSLibrary
             $mimes = new MimeTypes;
 
             // Convert extension to MIME type:
-            $mimes->getMimeType(pathinfo($object, PATHINFO_EXTENSION)); // application/json
+            $content_type = $mimes->getMimeType(pathinfo($object, PATHINFO_EXTENSION)); // application/json
 
             Sizuka::log(LibLog::LOG_INFO, 'content_type from mime ext', $content_type);
         }
