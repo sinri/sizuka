@@ -53,7 +53,7 @@ class Api extends SethController
                     "tree" => $tree->toJsonObject(),
                     "cache_time" => date('Y-m-d H:i:s'),
                 ];
-                Sizuka::getCacheAgent()->saveObject("object_tree", $result, 60 * 10);
+                Sizuka::getCacheAgent()->saveObject("object_tree", $result, 60 * 60);
             }
             $this->_sayOK($result);
         } catch (\Exception $exception) {
