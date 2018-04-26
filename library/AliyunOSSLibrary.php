@@ -8,6 +8,7 @@
 
 namespace sinri\sizuka\library;
 
+use Mimey\MimeTypes;
 use OSS\Core\OssException;
 use OSS\OssClient;
 use sinri\enoch\core\LibLog;
@@ -163,6 +164,8 @@ class AliyunOSSLibrary
         $content_type = $meta['content-type'];
         $content_length = $meta['content-length'];
 
+        Sizuka::log(LibLog::LOG_INFO, 'content_type from oss meta api for ' . $object, $content_type);
+
         if ($content_type === 'application/octet-stream') {
 //            if(preg_match('/\.[Mm][Pp]3$/',$object)){
 //                $content_type='audio/mp3';
@@ -173,7 +176,16 @@ class AliyunOSSLibrary
 //            if(preg_match('/\.[Mm]4[Aa]$/',$object)){
 //                $content_type='audio/mpeg';
 //            }
-            $content_type = mime_content_type($object);
+
+            //$content_type = mime_content_type($object);//object like 2018/1%E6%9C%8814%E6%97%A5%20%E4%B8%8A%E5%8D%889%E7%82%B916%E5%88%86.mp3
+
+
+            $mimes = new MimeTypes;
+
+            // Convert extension to MIME type:
+            $mimes->getMimeType(pathinfo($object, PATHINFO_EXTENSION)); // application/json
+
+            Sizuka::log(LibLog::LOG_INFO, 'content_type from mime ext', $content_type);
         }
 
         $url = $this->objectDownloadURL($object, $timeout);

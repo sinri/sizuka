@@ -4,7 +4,8 @@
   "type": "project",
   "require": {
     "sinri/enoch": "^2.2",
-    "aliyuncs/oss-sdk-php": "~2.0"
+    "aliyuncs/oss-sdk-php": "~2.0",
+    "ralouphie/mimey": "^1.0"
   },
   "license": "GPLv3",
   "authors": [
