@@ -19,10 +19,13 @@
         <i-col span="20" style="padding: 20px;border-bottom: 1px solid gray;">
             <Row>
                 <i-col span="18">
-                    <h1>Sizuka - Aliyun OSS Static Content Services</h1>
+                    <h1>{{site_title}} - Aliyun OSS Static Content Services</h1>
                 </i-col>
                 <i-col span="6" style="text-align: right">
-                    <i-button v-on:click="setToken">
+                    <template v-if="is_public">
+                        &nbsp;
+                    </template>
+                    <i-button v-on:click="setToken" v-else>
                         <template v-if="token_written">Logout</template>
                         <template v-else>Login</template>
                     </i-button>
@@ -70,7 +73,7 @@
                             </div>
                             <div style="clear: both"></div>
                         </div>
-                        <Tree :data="object_tree" @on-select-change="open_object"></Tree>
+                        <Tree :data="object_tree" @on-select-change="open_object" style="overflow: hidden"></Tree>
                     </Card>
                 </i-col>
                 <i-col :span="preview_span">
@@ -114,6 +117,7 @@
     let app = new Vue({
         el: '#app',
         data: {
+            site_title: 'Sizuka',
             cache_time: '',
             path: '',
             path_input: '',
@@ -124,10 +128,40 @@
             tree_span: 8,
             preview_span: 16,
             token_written: false,
+            is_public: false,
         },
         methods: {
+            loadSiteMeta: function () {
+                axios.get(
+                    '../Api/getSiteMeta'
+                ).then((res) => {
+                    console.log('success', res);
+                    if (res.data.code !== 'OK') {
+                        //alert('Explore Failed!');
+                        this.message = res.data.data;
+                    } else {
+                        if (res.data.data.is_public) {
+                            this.token_written = true;
+                            this.is_public = true;
+                        }
+                        this.site_title = res.data.data.site_title;
+                    }
+                    if (this.token_written) {
+                        this.explore();
+                    }
+                }).catch((res) => {
+                    console.log('error', res);
+                    this.message = 'ajax error';
+                    if (this.token_written) {
+                        this.explore();
+                    }
+                });
+            },
             explore: function (ignore_cache) {
-                if (Cookies.get("sizuka_token")) {
+                if (
+                    this.token_written
+                //Cookies.get("sizuka_token")
+                ) {
                     axios.get(
                         '../Api/explorer?force_update=' + (ignore_cache ? 'YES' : 'NO')
                     ).then((res) => {
@@ -191,9 +225,7 @@
             this.update_token_written();
             this.path = "";
             this.path_input = "";
-            if (this.token_written) {
-                this.explore();
-            }
+            this.loadSiteMeta();
         },
     })
 </script>

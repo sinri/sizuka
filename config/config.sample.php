@@ -6,6 +6,8 @@
  * Time: 21:25
  */
 
+//$config['site_title']='The Great Sizuka';
+
 /*
  * Commonly it should be empty.
  * However, for develop purpose, it might record the prefix to the web root.
@@ -28,6 +30,7 @@ $config['oss'] = [
 
 /**
  * The token set to cookie to pass the middleware.
+ * Leave it empty would make the OSS public actually
  */
 $config['token'] = 'token';
 

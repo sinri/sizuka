@@ -16,7 +16,11 @@ class SizukaMiddleware extends MiddlewareInterface
 {
     public function shouldAcceptRequest($path, $method, $params, &$preparedData = null, &$responseCode = 200, &$error = null)
     {
-        if ($_COOKIE['sizuka_token'] === Sizuka::config(['token'], rand(10000, 99999))) {
+        $configured_token = Sizuka::config(['token'], '');
+        if ($configured_token === '') {
+            return true;
+        }
+        if ($_COOKIE['sizuka_token'] === $configured_token) {
             return true;
         }
         return !false;

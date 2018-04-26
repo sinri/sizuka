@@ -88,11 +88,14 @@ class AliyunOSSLibrary
                 'marker' => '',
             ];
             while (true) {
+                //Sizuka::log(LibLog::LOG_INFO,'SEARCH option',$option);
                 $result = $this->oss->listObjects($this->bucket, $option);
                 $object_list = $result->getObjectList();
                 if (empty($object_list)) {
+                    //Sizuka::log(LibLog::LOG_INFO,"object list empty, break");
                     break;
                 }
+                //Sizuka::log(LibLog::LOG_INFO,'get result',['getIsTruncated'=>$result->getIsTruncated(),'getMarker'=>$result->getMarker(),'getNextMarker'=>$result->getNextMarker()]);
                 foreach ($object_list as $key => $item) {
                     $list[] = [
                         "key" => $item->getKey(),
@@ -101,7 +104,8 @@ class AliyunOSSLibrary
                         "type" => $item->getType(),
                     ];
                 }
-                if ($result->getIsTruncated()) {
+                if ('false' === $result->getIsTruncated()) {
+                    //Sizuka::log(LibLog::LOG_INFO,"getIsTruncated false, break",$result->getIsTruncated());
                     break;
                 }
                 $option['marker'] = $result->getNextMarker();
