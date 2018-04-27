@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="//unpkg.com/iview/dist/styles/iview.css">
     <!-- import iView -->
     <script src="//unpkg.com/iview/dist/iview.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 </head>
 <body>
 <div id="app">
@@ -90,10 +91,11 @@
                             <Icon type="easel"></Icon>
                             Preview
                         </div>
-                        <a href="#" slot="extra" @click.prevent="open_content">
-                            <Icon type="arrow-expand"></Icon>
-                            Open in new tab!
-                        </a>
+                        <div slot="extra">
+                            <i-button type="ghost" icon="share" @click="open_sharable_page">Sharable Page</i-button>
+                            <i-button type="ghost" icon="arrow-expand" @click.prevent="open_content">Open in new tab!
+                            </i-button>
+                        </div>
                         <iframe v-bind:src="preview_url" style="border: none;width:100%;min-height:450px;"></iframe>
                     </Card>
                 </i-col>
@@ -123,6 +125,7 @@
             path_input: '',
             object_tree: [],
             message: '',
+            opened_object_path: '',
             preview_url: '',
             tree_switch: true,
             tree_span: 8,
@@ -184,12 +187,16 @@
                 }
             },
             open_object: function (node) {
-                this.preview_url = "../proxy/" + node[0].path + (node[0].path.substr(-1) === '/' ? 'index.html' : '');
+                this.opened_object_path = node[0].path + (node[0].path.substr(-1) === '/' ? 'index.html' : '');
+                this.preview_url = "../proxy/" + this.opened_object_path;
                 console.log("open_object", this.preview_url);
                 //window.open("../proxy/" + node[0].path);
             },
             open_content: function () {
                 window.open(this.preview_url);
+            },
+            open_sharable_page: function () {
+                window.open('object.html?path=' + encodeURIComponent(this.opened_object_path));
             },
             change_tree_switch: function () {
                 // this.tree_switch=!this.tree_switch;

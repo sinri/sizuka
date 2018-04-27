@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Object Shared</title>
+    <script src="static/vue-2.5.13.js"></script>
+    <script src="static/axios.js"></script>
+    <script src="static/js.cookie.min.js"></script>
+
+    <!-- import stylesheet -->
+    <link rel="stylesheet" href="//unpkg.com/iview/dist/styles/iview.css">
+    <!-- import iView -->
+    <script src="//unpkg.com/iview/dist/iview.min.js"></script>
+
+    <script>
+        function getParameterByName(name, defaultValue) {
+            let match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+            let v = match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+            return v ? v : defaultValue;
+        }
+    </script>
+</head>
+<body>
+<div id="app">
+    <Row>
+        <i-col span="2">&nbsp;</i-col>
+        <i-col span="20" style="padding: 20px;border-bottom: 1px solid gray;">
+            <Row>
+                <i-col span="24">
+                    <h1>{{site_title}} - Aliyun OSS Static Content Services</h1>
+                </i-col>
+                <i-col span="24">
+                    Object Path
+                    :
+                    {{path}}
+                </i-col>
+            </Row>
+        </i-col>
+        <i-col span="2">&nbsp;</i-col>
+    </Row>
+    <Row style="margin-top: 10px">
+        <i-col span="2">&nbsp;</i-col>
+        <i-col span="20">
+            <iframe v-bind:src="preview_url" style="border: none;width:100%;min-height:450px;"></iframe>
+        </i-col>
+        <i-col span="2">&nbsp;</i-col>
+    </Row>
+</div>
+<script>
+    let app = new Vue({
+        el: '#app',
+        data: {
+            site_title: 'Sizuka',
+            is_public: false,
+            path: '',
+            preview_url: '',
+            message: '',
+        },
+        methods: {
+            loadSiteMeta: function () {
+                axios.get(
+                    '../Api/getSiteMeta'
+                ).then((res) => {
+                    console.log('success', res);
+                    if (res.data.code !== 'OK') {
+                        //alert('Explore Failed!');
+                        this.message = res.data.data;
+                    } else {
+                        if (res.data.data.is_public) {
+                            this.token_written = true;
+                            this.is_public = true;
+                        }
+                        this.site_title = res.data.data.site_title;
+                    }
+                }).catch((res) => {
+                    console.log('error', res);
+                    this.message = 'ajax error';
+                });
+            },
+        },
+        mounted: function () {
+            this.path = getParameterByName('path', '');
+            this.loadSiteMeta();
+            if (this.path !== '') {
+                this.preview_url = '../proxy/' + this.path;
+            }
+        }
+    });
+</script>
+</body>
+</html>
