@@ -74,7 +74,9 @@
                             </div>
                             <div style="clear: both"></div>
                         </div>
-                        <Tree :data="object_tree" @on-select-change="open_object" style="overflow: hidden"></Tree>
+                        <Spin v-if="object_tree===null"></Spin>
+                        <Tree :data="object_tree" @on-select-change="open_object" style="overflow: hidden"
+                              v-else></Tree>
                     </Card>
                 </i-col>
                 <i-col :span="preview_span">
@@ -123,7 +125,7 @@
             cache_time: '',
             path: '',
             path_input: '',
-            object_tree: [],
+            object_tree: null,
             message: '',
             opened_object_path: '',
             preview_url: '',
