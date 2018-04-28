@@ -7,6 +7,8 @@
  */
 
 //error_reporting(E_ALL^E_NOTICE^E_WARNING);
+use Jenssegers\Agent\Agent;
+
 require_once __DIR__ . '/autoload.php';
 
 date_default_timezone_set("Asia/Shanghai");
@@ -46,7 +48,15 @@ if (strpos($path, '/proxy/') === 0) {
     });
 
     $lamech->getRouter()->any("", function () {
-        header("Location: ./frontend/index.html");
+        $userAgentWorker = new Agent();
+        if ($userAgentWorker->isMobile()) {
+            //To use mobile style
+            header("Location: ./frontend/index-mobile.html");
+        } else {
+            // PC Style
+            header("Location: ./frontend/index.html");
+        }
+
     });
 
     $lamech->getRouter()->loadAllControllersInDirectoryAsCI(
