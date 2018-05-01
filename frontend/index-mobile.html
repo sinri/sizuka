@@ -26,7 +26,7 @@
             <Row>
                 <i-col span="24">
                     <h1>{{site_title}}</h1>
-                    <p>Aliyun OSS Static Content Services</p>
+                    <p>Static Content Services</p>
                 </i-col>
                 <i-col span="24" style="text-align: right">
                     <template v-if="is_public">
@@ -55,48 +55,25 @@
             </Row>
             <Row>
                 <i-col span="24">
-                    <Tabs v-model="tab_name">
-                        <tab-pane label="Files" name="tree">
-                            <Row>
-                                <i-col span="14" style="text-align: left;">
-                                    <i-button type="text" icon="refresh" v-on:click="explore(true)">Cached on
-                                        {{cache_time}}
-                                    </i-button>
-                                </i-col>
-                                <i-col span="10" style="text-align: right">
-                                    <i-button type="info" icon="ios-search" v-on:click="explore(false)"
-                                              style="display: inline-block">Refresh
-                                    </i-button>
-                                </i-col>
-                            </Row>
-                            <Row style="margin-top: 10px;border-top: 1px solid gray">
-                                <i-col span="24">
-                                    <Spin v-if="object_tree===null"></Spin>
-                                    <Tree :data="object_tree" @on-select-change="open_object" style="overflow: hidden"
-                                          v-else></Tree>
-                                </i-col>
-                            </Row>
-                        </tab-pane>
-                        <tab-pane label="Preview" name="preview">
-                            <div v-if="preview_url!==''">
-                                Not selected any object yet.
-                            </div>
-                            <div v-else>
-                                <div style="margin-top: 10px">
-                                    {{opened_object_path}}
-                                </div>
-                                <div style="margin-top: 10px">
-                                    <i-button type="ghost" icon="share" @click="open_sharable_page">Sharable Page
-                                    </i-button>
-                                    <i-button type="ghost" icon="arrow-expand" @click.prevent="open_content">Open in new
-                                        tab!
-                                    </i-button>
-                                </div>
-                                <iframe v-bind:src="preview_url"
-                                        style="margin-top:10px;border: none;width:100%;min-height:350px;"></iframe>
-                            </div>
-                        </tab-pane>
-                    </Tabs>
+                    <Row>
+                        <i-col span="14" style="text-align: left;">
+                            <i-button type="text" icon="refresh" v-on:click="explore(true)">Cached on
+                                {{cache_time}}
+                            </i-button>
+                        </i-col>
+                        <i-col span="10" style="text-align: right">
+                            <i-button type="info" icon="ios-search" v-on:click="explore(false)"
+                                      style="display: inline-block">Refresh
+                            </i-button>
+                        </i-col>
+                    </Row>
+                    <Row style="margin-top: 10px;border-top: 1px solid gray">
+                        <i-col span="24">
+                            <Spin v-if="object_tree===null"></Spin>
+                            <Tree :data="object_tree" @on-select-change="open_object"
+                                  v-else></Tree>
+                        </i-col>
+                    </Row>
                 </i-col>
             </Row>
         </i-col>
@@ -123,8 +100,7 @@
             opened_object_path: '',
             preview_url: '',
             token_written: false,
-            is_public: false,
-            tab_name: 'tree',
+            is_public: false
         },
         methods: {
             loadSiteMeta: function () {
@@ -185,9 +161,7 @@
                     this.preview_url = "../proxy/" + this.opened_object_path;
                     console.log("open_object", this.preview_url);
                 }
-                if (this.preview_url !== '') {
-                    this.tab_name = 'preview';
-                }
+                if (this.preview_url !== '') this.open_sharable_page();
             },
             open_content: function () {
                 window.open(this.preview_url);
