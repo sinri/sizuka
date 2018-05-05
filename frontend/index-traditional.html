@@ -137,11 +137,11 @@
         }
         code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>";
         if (node.children) {
+            code += node.title;
+        } else {
             code += "<a href='" + preview_url + "' target='_blank'>";
             code += node.title;
             code += "</a>";
-        } else {
-            code += node.title;
         }
         code += "</div>";
         // Audio might cause problem in safari
