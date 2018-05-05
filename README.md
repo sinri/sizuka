@@ -43,6 +43,17 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 * Content providers could upload their works at the management page of Aliyun OSS, or use any tool app.
 * Content readers could open the deployed Sizuka Site, configure the token, and refresh the object list and view any item.
 
+## Special Pages
+
+### Traditional Version
+
+As Vue.js based page might not be rendered correctly in traditional devices/environments (out-dated iOS, etc.), I made one use pure JavaScript.
+
+### Audio Player
+
+For MP3 audio files, server might process for Range header and respond code 206 and range of bytes. Read code for details.
+That might make audio seekable.
+
 ## About
 
 This project is published under the License GNU GPLv3.
