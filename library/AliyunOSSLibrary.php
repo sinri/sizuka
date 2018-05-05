@@ -12,6 +12,8 @@ use Mimey\MimeTypes;
 use OSS\Core\OssException;
 use OSS\OssClient;
 use sinri\enoch\core\LibLog;
+use sinri\enoch\core\LibRequest;
+use sinri\enoch\helper\CommonHelper;
 use sinri\sizuka\Sizuka;
 
 class AliyunOSSLibrary
@@ -185,24 +187,57 @@ class AliyunOSSLibrary
         }
 
         if (in_array($ext, ['mp3'])) {
+            preg_match('/bytes=(\d+)\-(\d*)/', LibRequest::getServerVar('HTTP_RANGE', ''), $matches);
+            Sizuka::log(LibLog::LOG_INFO, 'HTTP_RANGE', $_SERVER['HTTP_RANGE']);
+            Sizuka::log(LibLog::LOG_INFO, "matches", $matches);
+            $range_begin = CommonHelper::safeReadArray($matches, 1, 0);
+            $range_end = CommonHelper::safeReadArray($matches, 2, 0);
+            if ($range_end <= 0) {
+                $range_end = $content_length - 1;
+                //min($content_length-1,$range_begin+51200);//why this would cause problem
+            }
+
             http_response_code(206);
-            header("Content-Range: bytes 0-" . ($content_length - 1) . "/" . $content_length);
-        }
-        //需要用到的头
-        header("Content-Type: " . $content_type);
-        header("Content-Length: " . $content_length);
+            header("Accept-Ranges: bytes");
+            header("Content-Range: bytes " . $range_begin . "-" . $range_end . "/" . $content_length);
 
-        Sizuka::log(LibLog::LOG_INFO, "proxy header list for object: " . $object, headers_list());
+            //需要用到的头
+            header("Content-Type: " . $content_type);
+            header("Content-Length: " . ($range_end - $range_begin + 1)
+            /*$content_length*/);
 
-        $fp = fopen($url, "r");
-        $buffer = 1024;
-        $file_count = 0;
-        //向浏览器返回数据
-        while (!feof($fp) && $file_count < $content_length) {
-            $file_con = fread($fp, $buffer);
-            $file_count += $buffer;
-            echo $file_con;
+            Sizuka::log(LibLog::LOG_INFO, "proxy header list for object: " . $object, headers_list());
+
+            $fp = fopen($url, "r");
+            $buffer = 1024;
+            $file_count = 0;
+            //向浏览器返回数据
+            fseek($fp, $range_begin);
+            while (!feof($fp) && $file_count < ($range_end - $range_begin + 1)) {
+                $file_con = fread($fp, $buffer);
+                $file_count += $buffer;
+                echo $file_con;
+            }
+            fclose($fp);
+        } else {
+            //需要用到的头
+            header("Content-Type: " . $content_type);
+            header("Content-Length: " . $content_length);
+
+            Sizuka::log(LibLog::LOG_INFO, "proxy header list for object: " . $object, headers_list());
+
+            $fp = fopen($url, "r");
+            $buffer = 1024;
+            $file_count = 0;
+            //向浏览器返回数据
+            while (!feof($fp) && $file_count < $content_length) {
+                $file_con = fread($fp, $buffer);
+                $file_count += $buffer;
+                echo $file_con;
+            }
+            fclose($fp);
         }
-        fclose($fp);
+
+
     }
 }
