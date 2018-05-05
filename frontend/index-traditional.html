@@ -138,15 +138,16 @@
         code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>";
         code += "<a href='" + preview_url + "' target='_blank'>" + node.title + "</a>";
         code += "</div>";
-        if (preview_url.toLocaleLowerCase().endsWith(".mp3")) {
-            code += "<div style='white-space:nowrap;'>";
-            code += "<button style='display:inline-block;border: 1px solid white;width:32px'>" + ' ' + "</button>";
-            code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>";
-            code += "<audio src='" + preview_url + "' controls>" +
-                "<p>你的浏览器不支持audio标签</p>" +
-                "</audio>";
-            code += "</div>";
-        }
+        // Audio might cause problem in safari
+        // if (preview_url.toLocaleLowerCase().endsWith(".mp3")) {
+        //     code += "<div style='white-space:nowrap;'>";
+        //     code += "<button style='display:inline-block;border: 1px solid white;width:32px'>" + ' ' + "</button>";
+        //     code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>";
+        //     code += "<audio src='" + preview_url + "' controls>" +
+        //         "<p>你的浏览器不支持audio标签</p>" +
+        //         "</audio>";
+        //     code += "</div>";
+        // }
         if (node.children) {
             var margin_left = level * 10;
             code += "<div style='margin-top: 20px;margin-left: " + margin_left + "px;display: " + (node.expand ? 'block' : 'none') + "'>";
