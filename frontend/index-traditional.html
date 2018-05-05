@@ -136,7 +136,13 @@
             code += "<button style='display:inline-block;border: 1px solid white;width:32px'>" + ' ' + "</button>";
         }
         code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>";
-        code += "<a href='" + preview_url + "' target='_blank'>" + node.title + "</a>";
+        if (node.children) {
+            code += "<a href='" + preview_url + "' target='_blank'>";
+            code += node.title;
+            code += "</a>";
+        } else {
+            code += node.title;
+        }
         code += "</div>";
         // Audio might cause problem in safari
         if (preview_url.toLocaleLowerCase().endsWith(".mp3")) {
