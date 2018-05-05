@@ -15,7 +15,8 @@
     </style>
 </head>
 <body onload="loadSiteMeta()">
-<h1><span id="site_title_span"></span> - Sizuka</h1>
+<h1><span id="site_title_span"></span></h1>
+<p>Static Content Services</p>
 <p>Traditional Version</p>
 <div id="token_div">
     <button onclick="setToken()">Update Token</button>
@@ -134,7 +135,7 @@
         } else {
             code += "<button style='display:inline-block;border: 1px solid white;width:32px'>" + ' ' + "</button>";
         }
-        code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>" + "<a href='" + preview_url + "' target='_blank'>" + node.title + "</a> " + node.size;
+        code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>" + "<a href='" + preview_url + "' target='_blank'>" + node.title + "</a>";
         code += "</div>";
         if (node.children) {
             var margin_left = level * 10;
