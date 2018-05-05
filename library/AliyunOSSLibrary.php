@@ -71,6 +71,25 @@ class AliyunOSSLibrary
         }
     }
 
+    /**
+     * @param $object
+     * @param null|int $range_begin
+     * @param string|int $range_end
+     * @return bool|string
+     */
+    public function readObject($object, $range_begin = null, $range_end = '')
+    {
+        try {
+            $options = null;
+            if ($range_begin !== null) {
+                $options = array(OssClient::OSS_RANGE => $range_begin . '-' . $range_end);
+            }
+            return $this->oss->getObject($this->bucket, $object, $options);
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
     public function listObjects($prefix = '')
     {
         try {
@@ -193,8 +212,8 @@ class AliyunOSSLibrary
             $range_begin = CommonHelper::safeReadArray($matches, 1, 0);
             $range_end = CommonHelper::safeReadArray($matches, 2, 0);
             if ($range_end <= 0) {
-                $range_end = $content_length - 1;
-                //min($content_length-1,$range_begin+51200);//why this would cause problem
+                //$range_end = $content_length - 1;
+                $range_end = min($content_length - 1, $range_begin + 51200);//why this would cause problem
             }
 
             http_response_code(206);
@@ -208,18 +227,20 @@ class AliyunOSSLibrary
 
             Sizuka::log(LibLog::LOG_INFO, "proxy header list for object: " . $object, headers_list());
 
-            $fp = fopen($url, "r");
-            $buffer = 1024;
-            $file_count = 0;
-            //向浏览器返回数据
-            $seek_result = fseek($fp, $range_begin);
-            Sizuka::log(LibLog::LOG_INFO, "seek to " . $range_begin, $seek_result);
-            while (!feof($fp) && $file_count < ($range_end - $range_begin + 1)) {
-                $file_con = fread($fp, $buffer);
-                $file_count += $buffer;
-                echo $file_con;
-            }
-            fclose($fp);
+            echo $this->readObject($object, $range_begin, $range_end);
+
+//            $fp = fopen($url, "r");
+//            $buffer = 1024;
+//            $file_count = 0;
+//            //向浏览器返回数据
+//            $seek_result = fseek($fp, $range_begin);
+//            Sizuka::log(LibLog::LOG_INFO, "seek to " . $range_begin, $seek_result);
+//            while (!feof($fp) && $file_count < ($range_end - $range_begin + 1)) {
+//                $file_con = fread($fp, $buffer);
+//                $file_count += $buffer;
+//                echo $file_con;
+//            }
+//            fclose($fp);
         } else {
             //需要用到的头
             header("Content-Type: " . $content_type);
