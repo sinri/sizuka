@@ -128,15 +128,25 @@
         //console.log('opened_object_path',opened_object_path);
 
         var code = "<div>";
-        code += "<div style='margin-top: 20px;white-space:nowrap; '>";
+        code += "<div style='margin-top: 20px;white-space:nowrap;height: 40px;line-height: 40px;'>";
         if (node.children) {
             // need button
             code += "<button style='display:inline-block;width: 32px;' onclick='onExpandButton(this)'>" + (node.expand ? '-' : '+') + "</button>";
         } else {
             code += "<button style='display:inline-block;border: 1px solid white;width:32px'>" + ' ' + "</button>";
         }
-        code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>" + "<a href='" + preview_url + "' target='_blank'>" + node.title + "</a>";
+        code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>";
+        code += "<a href='" + preview_url + "' target='_blank'>" + node.title + "</a>";
         code += "</div>";
+        if (preview_url.toLocaleLowerCase().endsWith(".mp3")) {
+            code += "<div style='white-space:nowrap;'>";
+            code += "<button style='display:inline-block;border: 1px solid white;width:32px'>" + ' ' + "</button>";
+            code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>";
+            code += "<audio src='" + preview_url + "' controls>" +
+                "<p>你的浏览器不支持audio标签</p>" +
+                "</audio>";
+            code += "</div>";
+        }
         if (node.children) {
             var margin_left = level * 10;
             code += "<div style='margin-top: 20px;margin-left: " + margin_left + "px;display: " + (node.expand ? 'block' : 'none') + "'>";
