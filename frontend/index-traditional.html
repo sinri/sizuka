@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Sizuka Traditional Version</title>
+    <script src="static/axios.js"></script>
+    <script src="static/js.cookie.min.js"></script>
+    <style>
+        button {
+            border: 1px solid gray;
+            background-color: white;
+            color: gray;
+        }
+    </style>
+</head>
+<body onload="loadSiteMeta()">
+<h1><span id="site_title_span"></span> - Sizuka</h1>
+<p>Traditional Version</p>
+<div id="token_div">
+    <button onclick="setToken()">Update Token</button>
+</div>
+<div id="message_div" style="margin: 10px"></div>
+<hr>
+<div id="tree_div"></div>
+<div style="margin-top: 10px"></div>
+<hr>
+<div span="24" style="padding: 10px;text-align: center">
+    <p>Powered by <a href="https://github.com/sinri/sizuka">Project Sizuka</a>. Copyright 2018 Sinri Edogawa</p>
+    <p>
+        Donation with
+        bitcoin: 18wCjV8mnepDpLzASKdW7CGo6U8F9rPuV4
+    </p>
+</div>
+<script>
+    var token_written = false;
+    var is_public = false;
+    var object_tree = [];
+    var cache_time = '';
+
+    function E(id) {
+        return document.getElementById(id);
+    }
+
+    function loadSiteMeta() {
+        axios.get(
+            '../Api/getSiteMeta'
+        ).then((res) => {
+            console.log('success', res);
+            update_token_written();
+            if (res.data.code !== 'OK') {
+                E("message_div").innerHTML = res.data.data;
+            } else {
+                if (res.data.data.is_public) {
+                    token_written = true;
+                    is_public = true;
+                }
+                if (is_public) {
+                    E("token_div").style.display = 'none';
+                } else {
+                    if (!token_written) {
+                        E("message_div").innerHTML = "Token needed.";
+                    }
+                }
+                E('site_title_span').innerHTML = res.data.data.site_title;
+            }
+            if (token_written) {
+                explore();
+            }
+        }).catch((res) => {
+            console.log('error', res);
+            E("message_div").innerHTML = 'ajax error';
+            if (token_written) {
+                explore();
+            }
+        });
+    }
+
+    function explore(ignore_cache) {
+        if (token_written) {
+            axios.get(
+                '../Api/explorer?force_update=' + (ignore_cache ? 'YES' : 'NO')
+            ).then((res) => {
+                console.log('success', res);
+                if (res.data.code !== 'OK') {
+                    //alert('Explore Failed!');
+                    E("message_div").innerHTML = res.data.data;
+                } else {
+                    var tree = res.data.data.tree;
+                    object_tree = tree.children;
+                    cache_time = res.data.data.cache_time;
+                    E("message_div").innerHTML = '';
+                    renderTree();
+                }
+            }).catch((res) => {
+                console.log('error', res);
+                E("message_div").innerHTML = 'ajax error';
+            });
+        } else {
+            E("message_div").innerHTML = "Token needed!";
+        }
+    }
+
+    function renderTree() {
+        var code = '';
+
+        code = "<p>Cached on " + cache_time + "</p>";
+        code += "<div>";
+        //code+=JSON.stringify(object_tree);
+
+        //console.log("object_tree",object_tree);
+        for (var i = 0; i < object_tree.length; i++) {
+            code += renderTreeNodeCode(object_tree[i], 1);
+        }
+
+        code += "</div>";
+
+        E("tree_div").innerHTML = code;
+    }
+
+    function renderTreeNodeCode(node, level) {
+        //console.log('renderTreeNodeCode node',node);
+
+        var opened_object_path = node.path + (node.path.substr(-1) === '/' ? 'index.html' : '');
+        var preview_url = "../proxy/" + opened_object_path;
+
+        //console.log('opened_object_path',opened_object_path);
+
+        var code = "<div>";
+        code += "<div style='margin-top: 20px;white-space:nowrap; '>";
+        if (node.children) {
+            // need button
+            code += "<button style='display:inline-block;width: 32px;' onclick='onExpandButton(this)'>" + (node.expand ? '-' : '+') + "</button>";
+        } else {
+            code += "<button style='display:inline-block;border: 1px solid white;width:32px'>" + ' ' + "</button>";
+        }
+        code += "<div style='display: inline-block;width: 50px;'>&nbsp;</div>" + "<a href='" + preview_url + "' target='_blank'>" + node.title + "</a> " + node.size;
+        code += "</div>";
+        if (node.children) {
+            var margin_left = level * 10;
+            code += "<div style='margin-top: 20px;margin-left: " + margin_left + "px;display: " + (node.expand ? 'block' : 'none') + "'>";
+            for (var i = 0; i < node.children.length; i++) {
+                code += renderTreeNodeCode(node.children[i], level + 1);
+            }
+            code += "</div>";
+        }
+        code += "</div>";
+        return code;
+    }
+
+    function onExpandButton(object) {
+        //console.log('onExpandButton on',object);
+        //console.log('onExpandButton parent parent',object.parentNode.parentNode);
+        //console.log('onExpandButton next div',object.parentNode.parentNode.childNodes[1]);
+        if (object.innerHTML === '-') {
+            object.parentNode.parentNode.childNodes[1].style.display = 'none';
+            object.innerHTML = '+';
+        } else {
+            object.parentNode.parentNode.childNodes[1].style.display = 'block';
+            object.innerHTML = '-';
+        }
+    }
+
+    function setToken() {
+        update_token_written();
+        if (token_written) {
+            Cookies.remove('sizuka_token');
+            update_token_written();
+            alert("Logout!");
+        } else {
+            let token = prompt("Set your identity token below");
+            if (token === '') {
+                alert('Empty string received, you are still not login!');
+            } else {
+                Cookies.set('sizuka_token', token, {expires: 1});
+                update_token_written();
+                alert("Token stored, refresh files...");
+                explore();
+            }
+        }
+    }
+
+    function update_token_written() {
+        let token = Cookies.get("sizuka_token");
+        token_written = !!token;
+    }
+</script>
+</body>
+</html>
