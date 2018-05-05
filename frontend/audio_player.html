@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sizuka Audio Player</title>
+    <script>
+        function getParameterByName(name, defaultValue) {
+            let match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+            let v = match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+            return v ? v : defaultValue;
+        }
+
+        function loadPage() {
+            var link = getParameterByName("link");
+            document.getElementById("link_p").innerHTML = link;
+            document.getElementById("player").setAttribute("src", link);
+        }
+    </script>
+</head>
+<body onload="loadPage()">
+<h1>Sizuka Audio Player</h1>
+<p id="link_p"></p>
+<div>
+    <audio id="player" src="" controls autoplay>
+        <p>你的浏览器不支持audio标签</p>
+    </audio>
+</div>
+<hr>
+<div span="24" style="padding: 10px;text-align: center">
+    <p>Powered by <a href="https://github.com/sinri/sizuka">Project Sizuka</a>. Copyright 2018 Sinri Edogawa</p>
+    <p>
+        Donation with
+        bitcoin: 18wCjV8mnepDpLzASKdW7CGo6U8F9rPuV4
+    </p>
+</div>
+</body>
+</html>
