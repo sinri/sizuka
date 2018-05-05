@@ -166,24 +166,14 @@ class AliyunOSSLibrary
 
         Sizuka::log(LibLog::LOG_INFO, 'content_type from oss meta api for ' . $object, $content_type);
 
+        $ext = pathinfo($object, PATHINFO_EXTENSION);
+        $ext = strtolower($ext);
+
         if ($content_type === 'application/octet-stream') {
-//            if(preg_match('/\.[Mm][Pp]3$/',$object)){
-//                $content_type='audio/mp3';
-//            }
-//            if(preg_match('/\.([Mm][Pp]4|[Mm][Pp][Ee][Gg])$/',$object)){
-//                $content_type='audio/mpeg';
-//            }
-//            if(preg_match('/\.[Mm]4[Aa]$/',$object)){
-//                $content_type='audio/mpeg';
-//            }
-
-            //$content_type = mime_content_type($object);//object like 2018/1%E6%9C%8814%E6%97%A5%20%E4%B8%8A%E5%8D%889%E7%82%B916%E5%88%86.mp3
-
-
             $mimes = new MimeTypes;
 
             // Convert extension to MIME type:
-            $content_type = $mimes->getMimeType(pathinfo($object, PATHINFO_EXTENSION)); // application/json
+            $content_type = $mimes->getMimeType($ext); // application/json
 
             Sizuka::log(LibLog::LOG_INFO, 'content_type from mime ext', $content_type);
         }
@@ -194,6 +184,10 @@ class AliyunOSSLibrary
             $content_type = 'application/octet-stream';
         }
 
+        if (in_array($ext, ['mp3'])) {
+            http_response_code(206);
+            header("Content-Range: bytes 0-" . ($content_length - 1) . "/" . $content_length);
+        }
         //需要用到的头
         header("Content-Type: " . $content_type);
         header("Content-Length: " . $content_length);
