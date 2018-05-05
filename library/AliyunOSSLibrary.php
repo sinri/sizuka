@@ -212,7 +212,8 @@ class AliyunOSSLibrary
             $buffer = 1024;
             $file_count = 0;
             //向浏览器返回数据
-            fseek($fp, $range_begin);
+            $seek_result = fseek($fp, $range_begin);
+            Sizuka::log(LibLog::LOG_INFO, "seek to " . $range_begin, $seek_result);
             while (!feof($fp) && $file_count < ($range_end - $range_begin + 1)) {
                 $file_con = fread($fp, $buffer);
                 $file_count += $buffer;
