@@ -315,4 +315,22 @@ class AliyunOSSLibrary
         }
         fclose($fp);
     }
+
+    public function checkMp3Length($object)
+    {
+        if (!$this->doesObjectExist($object)) {
+            throw new \Exception("It has been eaten by Giant Salamander!", 404);
+        }
+
+        $instanceOfMp3 = new MP3onOSSLengthHelper($this->oss, $this->bucket, $object);
+        $t1 = microtime(true);
+        $duration = $instanceOfMp3->getDuration();
+        $t2 = microtime(true);
+        $t3 = microtime(true);
+        $durationEstimate = $instanceOfMp3->getDurationEstimate();
+        $t4 = microtime(true);
+
+        echo 'duration=' . $duration . " time=" . ($t2 - $t1) . "s" . PHP_EOL;
+        echo 'durationEstimate=' . $durationEstimate . " time=" . ($t4 - $t3) . "s" . PHP_EOL;
+    }
 }
