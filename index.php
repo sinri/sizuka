@@ -38,6 +38,20 @@ if (strpos($path, '/proxy/') === 0) {
     }
     // proxy
     \sinri\sizuka\Sizuka::oss($path);
+} elseif (strpos($path, '/proxy_download/') === 0) {
+    // it is an oss proxy for download
+    // check auth
+    $pass = (new \sinri\sizuka\middleware\SizukaMiddleware())->shouldAcceptRequest(
+        $path,
+        \sinri\enoch\core\LibRequest::getRequestMethod(),
+        explode("&", $queryString)
+    );
+    if (!$pass) {
+        \sinri\sizuka\Sizuka::errorPage("Who art thou?", 403);
+        exit();
+    }
+    // proxy
+    \sinri\sizuka\Sizuka::oss($path);
 } else {
     //setcookie("sizuka_token",'sizuka');
     $lamech = new \sinri\enoch\mvc\Lamech();

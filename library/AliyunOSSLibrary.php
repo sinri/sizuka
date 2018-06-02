@@ -259,7 +259,60 @@ class AliyunOSSLibrary
             }
             fclose($fp);
         }
+    }
 
+    /**
+     * @param string $object
+     * @param int $timeout
+     * @throws \Exception
+     */
+    public function proxyDownloadObject($object, $timeout = 3600)
+    {
+        if (!$this->doesObjectExist($object)) {
+            throw new \Exception("It has been eaten by Giant Salamander!", 404);
+        }
+        $meta = $this->oss->getObjectMeta($this->bucket, $object);
 
+        Sizuka::log(LibLog::LOG_INFO, "meta of object: " . $object, $meta);
+
+        $content_type = $meta['content-type'];
+        $content_length = $meta['content-length'];
+
+        Sizuka::log(LibLog::LOG_INFO, 'content_type from oss meta api for ' . $object, $content_type);
+
+        $ext = pathinfo($object, PATHINFO_EXTENSION);
+        $ext = strtolower($ext);
+
+        if ($content_type === 'application/octet-stream') {
+            $mimes = new MimeTypes;
+
+            // Convert extension to MIME type:
+            $content_type = $mimes->getMimeType($ext); // application/json
+
+            Sizuka::log(LibLog::LOG_INFO, 'content_type from mime ext', $content_type);
+        }
+
+        $url = $this->objectDownloadURL($object, $timeout);
+
+        if ($content_type === null) {
+            $content_type = 'application/octet-stream';
+        }
+
+        //需要用到的头
+        header("Content-Type: " . $content_type);
+        header("Content-Length: " . $content_length);
+
+        Sizuka::log(LibLog::LOG_INFO, "proxy header list for object: " . $object, headers_list());
+
+        $fp = fopen($url, "r");
+        $buffer = 1024;
+        $file_count = 0;
+        //向浏览器返回数据
+        while (!feof($fp) && $file_count < $content_length) {
+            $file_con = fread($fp, $buffer);
+            $file_count += $buffer;
+            echo $file_con;
+        }
+        fclose($fp);
     }
 }

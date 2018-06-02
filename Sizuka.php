@@ -64,6 +64,17 @@ class Sizuka
         }
     }
 
+    public static function ossDownload($object, $timeout = 3600)
+    {
+        try {
+            //echo $object.PHP_EOL;
+            $object = substr($object, strlen('/proxy_download/'));
+            (new AliyunOSSLibrary(self::config(['oss', 'bucket'])))->proxyDownloadObject($object, $timeout);
+        } catch (\Exception $exception) {
+            self::errorPage($exception->getMessage(), 404);
+        }
+    }
+
     public static function errorPage($error, $code)
     {
         http_response_code($code);
