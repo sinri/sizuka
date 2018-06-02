@@ -315,4 +315,32 @@ class AliyunOSSLibrary
         }
         fclose($fp);
     }
+
+    /**
+     * Require `ffmpeg`
+     * For Debian, `apt-get install ffmpeg`
+     * @param $object
+     * @throws \Exception
+     */
+    public function getMp3ObjectDurationWithFFMpeg($object)
+    {
+        if (!$this->doesObjectExist($object)) {
+            throw new \Exception("-1", 404);
+        }
+
+        $url = $this->objectDownloadURL($object, 60 * 10);
+
+        $command = "ffmpeg -i " . escapeshellarg($url) . " 2>&1 | grep duration -i|awk '{print $2}'";
+        //01:43:08.41,
+        $line = exec($command);
+        $line = str_replace(',', '', $line);
+        $g1 = explode(':', $line);
+        $seconds = 0;
+        for ($i = 0; $i < count($g1); $i++) {
+            if ($i > 0) $seconds = $seconds * 60;
+            $seconds += $g1[$i];
+        }
+
+        echo $seconds;
+    }
 }
