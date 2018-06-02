@@ -80,7 +80,7 @@ class Sizuka
         try {
             //echo $object.PHP_EOL;
             $object = substr($object, strlen('/proxy_mp3_duration/'));
-            (new AliyunOSSLibrary(self::config(['oss', 'bucket'])))->proxyDownloadObject($object, 60 * 5);
+            (new AliyunOSSLibrary(self::config(['oss', 'bucket'])))->getMp3ObjectDurationWithFFMpeg($object);
         } catch (\Exception $exception) {
             self::errorPage($exception->getMessage(), 404);
         }
