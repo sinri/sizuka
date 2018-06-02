@@ -51,7 +51,7 @@ if (strpos($path, '/proxy/') === 0) {
         exit();
     }
     // proxy
-    \sinri\sizuka\Sizuka::oss($path);
+    \sinri\sizuka\Sizuka::ossDownload($path);
 } else {
     //setcookie("sizuka_token",'sizuka');
     $lamech = new \sinri\enoch\mvc\Lamech();

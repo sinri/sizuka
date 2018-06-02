@@ -207,7 +207,7 @@ class AliyunOSSLibrary
 
         if (in_array($ext, ['mp3'])) {
             preg_match('/bytes=(\d+)\-(\d*)/', LibRequest::getServerVar('HTTP_RANGE', ''), $matches);
-            Sizuka::log(LibLog::LOG_INFO, 'HTTP_RANGE', $_SERVER['HTTP_RANGE']);
+            Sizuka::log(LibLog::LOG_INFO, 'HTTP_RANGE', LibRequest::getServerVar('HTTP_RANGE', ''));
             Sizuka::log(LibLog::LOG_INFO, "matches", $matches);
             $range_begin = CommonHelper::safeReadArray($matches, 1, 0);
             $range_end = CommonHelper::safeReadArray($matches, 2, 0);
