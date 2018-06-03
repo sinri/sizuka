@@ -60,4 +60,43 @@ class Api extends SethController
             $this->_sayFail($exception->getMessage());
         }
     }
+
+    public function listObjectsForPath()
+    {
+        $path = LibRequest::getRequest("path", '');// such as `lab/`
+        try {
+            $full_result = Sizuka::getCacheAgent()->getObject("object_list");
+            if (empty($full_result)) {
+                $full_list = (new AliyunOSSLibrary())->listObjects($path);
+                $full_result = [
+                    "list" => $full_list,
+                    "cache_time" => date('Y-m-d H:i:s'),
+                ];
+                Sizuka::getCacheAgent()->saveObject("object_list", $full_result, 60 * 60);
+            }
+            $result = [
+                'folders' => [],
+                'objects' => [],
+                'cache_time' => $full_result['cache_time'],
+            ];
+            foreach ($full_result['list'] as $item) {
+                $key = $item['key'];
+                if (strlen($path) > 0 && strpos($key, $path) !== 0) {
+                    continue;
+                }
+                $tail = substr($key, strlen($path));
+                if (strlen($tail) === 0) continue;
+                $p = strpos($tail, '/');
+//                echo "p=$p tail.len=".strlen($tail).PHP_EOL;
+                if ($p === false) {
+                    $result['objects'][] = $item;
+                } elseif ($p === strlen($tail) - 1) {
+                    $result['folders'][] = $item;
+                }
+            }
+            $this->_sayOK($result);
+        } catch (\Exception $exception) {
+            $this->_sayFail($exception->getMessage());
+        }
+    }
 }
