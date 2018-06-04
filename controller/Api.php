@@ -67,7 +67,7 @@ class Api extends SethController
         try {
             $full_result = Sizuka::getCacheAgent()->getObject("object_list");
             if (empty($full_result)) {
-                $full_list = (new AliyunOSSLibrary())->listObjects($path);
+                $full_list = (new AliyunOSSLibrary())->listObjects();
                 $full_result = [
                     "list" => $full_list,
                     "cache_time" => date('Y-m-d H:i:s'),
