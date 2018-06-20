@@ -310,7 +310,7 @@ class AliyunOSSLibrary
         //向浏览器返回数据
         while (!feof($fp) && $file_count < $content_length) {
             $file_con = fread($fp, $buffer);
-            $file_count += $buffer;
+            $file_count += strlen($file_con);//$buffer;
             echo $file_con;
         }
         fclose($fp);
