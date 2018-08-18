@@ -205,7 +205,7 @@ class AliyunOSSLibrary
             $content_type = 'application/octet-stream';
         }
 
-        if (in_array($ext, ['mp3'])) {
+        if (in_array($ext, ['mp3', 'mp4'])) {
             preg_match('/bytes=(\d+)\-(\d*)/', LibRequest::getServerVar('HTTP_RANGE', ''), $matches);
             Sizuka::log(LibLog::LOG_INFO, 'HTTP_RANGE', LibRequest::getServerVar('HTTP_RANGE', ''));
             Sizuka::log(LibLog::LOG_INFO, "matches", $matches);
