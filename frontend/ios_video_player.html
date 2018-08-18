@@ -41,7 +41,9 @@
     <!--</Row>-->
     <Row style="margin-top: 0">
         <i-col span="24">
-            <iframe v-bind:src="preview_url" style="border: none;width:100%;min-height:450px;"></iframe>
+            <!--<iframe v-bind:src="preview_url" style="border: none;width:100%;min-height:450px;"></iframe>-->
+            <video controls autoplay name="media" v-bind:src="preview_url" type="video/mp4"
+                   style="border: none;width:100%;min-height:450px;"></video>
         </i-col>
     </Row>
 </div>
