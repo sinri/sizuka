@@ -37,9 +37,9 @@ $config['token'] = 'token';
 /**
  * The logging configuration
  */
-$config['log']['dir'] = __DIR__ . '/log';
+$config['log']['dir'] = __DIR__ . '/../log';
 
 /**
  * The cache configuration
  */
-$config['cache']['dir'] = __DIR__ . '/cache';
+$config['cache']['dir'] = __DIR__ . '/../cache';
