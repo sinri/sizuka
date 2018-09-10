@@ -190,7 +190,8 @@
             },
             open_object: function (node) {
                 this.opened_object_path = node[0].path + (node[0].path.substr(-1) === '/' ? 'index.html' : '');
-                this.preview_url = "../proxy/" + this.opened_object_path;
+                //this.preview_url = "../proxy/" + this.opened_object_path;
+                this.preview_url = "../Api/previewUrlForObject?object=" + encodeURIComponent(this.opened_object_path);
                 console.log("open_object", this.preview_url);
                 //window.open("../proxy/" + node[0].path);
             },

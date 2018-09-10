@@ -99,4 +99,37 @@ class Api extends SethController
             $this->_sayFail($exception->getMessage());
         }
     }
+
+    public function previewUrlForObject()
+    {
+        try {
+            $object = LibRequest::getRequest("object");
+
+            $ext = pathinfo($object, PATHINFO_EXTENSION);
+            $ext = strtolower($ext);
+
+            $url = (new AliyunOSSLibrary())->objectDownloadURL($object, 3600);
+
+            $previewUrl = null;
+
+            switch ($ext) {
+                case "xlsx":
+                case "xls":
+                case "docx":
+                case "doc":
+                case "pptx":
+                case "ppt":
+                    $previewUrl = "https://view.officeapps.live.com/op/view.aspx?src=" . urlencode($url);
+                    break;
+                default:
+                    $previewUrl = Sizuka::config(["gateway"]) . "/proxy/" . $object;
+                    break;
+            }
+
+            header("Location: " . $previewUrl);
+            //$this->_sayOK($previewUrl);
+        } catch (\Exception $exception) {
+            $this->_sayFail($exception->getMessage());
+        }
+    }
 }

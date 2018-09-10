@@ -11,7 +11,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/ralouphie/getallheaders" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ralouphie/mimey" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sinri/enoch" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/sinri/smallphpmailer" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
