@@ -94,6 +94,7 @@
                             Preview
                         </div>
                         <div slot="extra">
+                            <i-button type="ghost" icon="download" @click="open_download_directly">Download</i-button>
                             <i-button type="ghost" icon="share" @click="open_sharable_page">Sharable Page</i-button>
                             <i-button type="ghost" icon="arrow-expand" @click.prevent="open_content">Open in new tab!
                             </i-button>
@@ -129,6 +130,7 @@
             message: '',
             opened_object_path: '',
             preview_url: '',
+            direct_download_url: '',
             tree_switch: true,
             tree_span: 8,
             preview_span: 16,
@@ -192,6 +194,7 @@
                 this.opened_object_path = node[0].path + (node[0].path.substr(-1) === '/' ? 'index.html' : '');
                 //this.preview_url = "../proxy/" + this.opened_object_path;
                 this.preview_url = "../Api/previewUrlForObject?object=" + encodeURIComponent(this.opened_object_path);
+                this.direct_download_url = "../Api/directlyDownloadUrlForObject?object=" + encodeURIComponent(this.opened_object_path);
                 console.log("open_object", this.preview_url);
                 //window.open("../proxy/" + node[0].path);
             },
@@ -200,6 +203,9 @@
             },
             open_sharable_page: function () {
                 window.open('object.html?path=' + encodeURIComponent(this.opened_object_path));
+            },
+            open_download_directly: function () {
+                window.open(this.direct_download_url);
             },
             change_tree_switch: function () {
                 // this.tree_switch=!this.tree_switch;

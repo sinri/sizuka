@@ -132,4 +132,16 @@ class Api extends SethController
             $this->_sayFail($exception->getMessage());
         }
     }
+
+    public function directlyDownloadUrlForObject()
+    {
+        try {
+            $object = LibRequest::getRequest("object");
+            $url = (new AliyunOSSLibrary())->objectDownloadURL($object, 3600);
+            header("Location: " . $url);
+            //$this->_sayOK($previewUrl);
+        } catch (\Exception $exception) {
+            $this->_sayFail($exception->getMessage());
+        }
+    }
 }
