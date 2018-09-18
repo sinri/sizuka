@@ -30,7 +30,8 @@ $config['oss'] = [
 
 /**
  * The token set to cookie to pass the middleware.
- * Leave it empty would make the OSS public actually
+ * Leave it empty would make the OSS public actually.
+ * Since 2018-09-18, ['token'=>['path/head'],...] is also supported. Remember the Shame of our Nation!
  */
 $config['token'] = 'token';
 

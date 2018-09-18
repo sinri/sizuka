@@ -3,6 +3,8 @@
   "description": "a website for resource",
   "type": "project",
   "require": {
+    "ext-json": "*",
+    "ext-mbstring": "*",
     "sinri/enoch": "^2.2",
     "aliyuncs/oss-sdk-php": "~2.0",
     "ralouphie/mimey": "^1.0",

@@ -10,6 +10,7 @@ namespace sinri\sizuka\middleware;
 
 
 use sinri\enoch\core\LibRequest;
+use sinri\enoch\helper\CommonHelper;
 use sinri\enoch\mvc\MiddlewareInterface;
 use sinri\sizuka\Sizuka;
 
@@ -21,9 +22,14 @@ class SizukaMiddleware extends MiddlewareInterface
         if ($configured_token === '') {
             return true;
         }
-        if (LibRequest::getCookie('sizuka_token') === $configured_token) {
+        $token = LibRequest::getCookie('sizuka_token');
+        if ($token === $configured_token) {
             return true;
         }
-        return !false;
+        $permitted = CommonHelper::safeReadArray($configured_token, $token, false);
+        if (!!$permitted) {
+            return true;
+        }
+        return false;
     }
 }

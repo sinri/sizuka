@@ -11,6 +11,7 @@ namespace sinri\sizuka\controller;
 
 use sinri\enoch\core\LibLog;
 use sinri\enoch\core\LibRequest;
+use sinri\enoch\helper\CommonHelper;
 use sinri\enoch\mvc\SethController;
 use sinri\sizuka\library\AliyunOSSLibrary;
 use sinri\sizuka\Sizuka;
@@ -32,6 +33,17 @@ class Api extends SethController
         ]);
     }
 
+    /**
+     * @return string[]|null
+     */
+    private function getPermittedPatterns()
+    {
+        $token = LibRequest::getCookie('sizuka_token');
+        $configured_token = Sizuka::config(['token'], '');
+        if (!is_array($configured_token)) return null;
+        return CommonHelper::safeReadArray($configured_token, $token, []);
+    }
+
     public function setToken($token = 'sizuka')
     {
         setcookie("sizuka_token", $token);
@@ -39,13 +51,16 @@ class Api extends SethController
 
     public function explorer()
     {
+        $patterns = $this->getPermittedPatterns();
+        $patternsHash = md5(json_encode($patterns));
+
         $force_update = LibRequest::getRequest("force_update", 'NO');
         $path = '';//LibRequest::getRequest("path", '');
         // find sub objects
         try {
-            $result = Sizuka::getCacheAgent()->getObject("object_tree");
+            $result = Sizuka::getCacheAgent()->getObject("object_tree_" . $patternsHash);
             if (empty($result) || $force_update === 'YES') {
-                $list = (new AliyunOSSLibrary())->listObjects($path);
+                $list = (new AliyunOSSLibrary())->listObjects($path, $patterns);
                 Sizuka::log(LibLog::LOG_INFO, 'list objects count', count($list));
                 $tree = (new AliyunOSSLibrary())->makeObjectTree($list);
                 //Sizuka::log(LibLog::LOG_INFO,'object tree',$tree);
@@ -53,7 +68,7 @@ class Api extends SethController
                     "tree" => $tree->toJsonObject(),
                     "cache_time" => date('Y-m-d H:i:s'),
                 ];
-                Sizuka::getCacheAgent()->saveObject("object_tree", $result, 60 * 60);
+                Sizuka::getCacheAgent()->saveObject("object_tree_" . $patternsHash, $result, 60 * 60);
             }
             $this->_sayOK($result);
         } catch (\Exception $exception) {

@@ -90,7 +90,12 @@ class AliyunOSSLibrary
         }
     }
 
-    public function listObjects($prefix = '')
+    /**
+     * @param string $prefix
+     * @param null|string[] $patterns
+     * @return array|bool
+     */
+    public function listObjects($prefix = '', $patterns = null)
     {
         try {
             $list = [];
@@ -119,12 +124,25 @@ class AliyunOSSLibrary
                 }
                 //Sizuka::log(LibLog::LOG_INFO,'get result',['getIsTruncated'=>$result->getIsTruncated(),'getMarker'=>$result->getMarker(),'getNextMarker'=>$result->getNextMarker()]);
                 foreach ($object_list as $key => $item) {
-                    $list[] = [
-                        "key" => $item->getKey(),
-                        "last_modified" => $item->getLastModified(),
-                        "size" => $item->getSize(),
-                        "type" => $item->getType(),
-                    ];
+                    $match = true;
+                    if (is_array($patterns)) {
+                        $match = false;
+                        foreach ($patterns as $pattern) {
+                            // simple permission
+                            if (mb_strstr($item->getKey(), $pattern) !== false) {
+                                $match = true;
+                                break;
+                            }
+                        }
+                    }
+                    if ($match) {
+                        $list[] = [
+                            "key" => $item->getKey(),
+                            "last_modified" => $item->getLastModified(),
+                            "size" => $item->getSize(),
+                            "type" => $item->getType(),
+                        ];
+                    }
                 }
                 if ('false' === $result->getIsTruncated()) {
                     //Sizuka::log(LibLog::LOG_INFO,"getIsTruncated false, break",$result->getIsTruncated());
