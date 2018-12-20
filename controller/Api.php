@@ -27,9 +27,11 @@ class Api extends SethController
     {
         $configured_token = Sizuka::config(['token'], '');
         $site_title = Sizuka::config(['site_title'], 'Sizuka');
+        $site_footer_remark = Sizuka::config(['site_footer_remark'], '');
         $this->_sayOK([
             'is_public' => ($configured_token === ''),
             'site_title' => $site_title,
+            'site_footer_remark' => $site_footer_remark,
         ]);
     }
 

@@ -7,6 +7,7 @@
  */
 
 //$config['site_title']='The Great Sizuka';
+//$config['site_footer_remark']='';
 
 /*
  * Commonly it should be empty.

@@ -115,6 +115,7 @@
                 Donation with
                 bitcoin: 18wCjV8mnepDpLzASKdW7CGo6U8F9rPuV4
             </p>
+            <p v-html="site_footer_remark"></p>
         </i-col>
         <i-col span="2">&nbsp;</i-col>
     </Row>
@@ -124,6 +125,7 @@
         el: '#app',
         data: {
             site_title: 'Sizuka',
+            site_footer_remark: '',
             cache_time: '',
             path: '',
             path_input: '',
@@ -153,6 +155,7 @@
                             this.is_public = true;
                         }
                         this.site_title = res.data.data.site_title;
+                        this.site_footer_remark = res.data.data.site_footer_remark;
                     }
                     if (this.token_written) {
                         this.explore();
