@@ -22,6 +22,9 @@ class SizukaMiddleware extends MiddlewareInterface
         if ($configured_token === '') {
             return true;
         }
+        if ($path === '/Api/getSiteMeta') {
+            return true;
+        }
         $token = LibRequest::getCookie('sizuka_token');
         if ($token === $configured_token) {
             return true;
