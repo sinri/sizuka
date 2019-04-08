@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Unnamed" pattern="!file[sizuka]:vendor//*&amp;&amp;!file[sizuka]:.idea//*&amp;&amp;!file[sizuka]:docs//*&amp;&amp;!file:composer.phar&amp;&amp;!file:composer.lock&amp;&amp;!file:composer.json&amp;&amp;!file:LICENSE&amp;&amp;!file:README.md" />
+</component>

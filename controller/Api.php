@@ -9,6 +9,7 @@
 namespace sinri\sizuka\controller;
 
 
+use Parsedown;
 use sinri\enoch\core\LibLog;
 use sinri\enoch\core\LibRequest;
 use sinri\enoch\helper\CommonHelper;
@@ -126,7 +127,6 @@ class Api extends SethController
             $ext = strtolower($ext);
 
             $url = (new AliyunOSSLibrary())->objectDownloadURL($object, 3600);
-
             $previewUrl = null;
 
             switch ($ext) {
@@ -137,6 +137,9 @@ class Api extends SethController
                 case "pptx":
                 case "ppt":
                     $previewUrl = "https://view.officeapps.live.com/op/view.aspx?src=" . urlencode($url);
+                    break;
+                case "md":
+                    $previewUrl = "./showRenderedMarkdown?src=" . urlencode($url);
                     break;
                 default:
                     $previewUrl = Sizuka::config(["gateway"]) . "/proxy/" . $object;
@@ -157,6 +160,25 @@ class Api extends SethController
             $url = (new AliyunOSSLibrary())->objectDownloadURL($object, 3600);
             header("Location: " . $url);
             //$this->_sayOK($previewUrl);
+        } catch (\Exception $exception) {
+            $this->_sayFail($exception->getMessage());
+        }
+    }
+
+    public function showRenderedMarkdown()
+    {
+        try {
+            $src = LibRequest::getRequest("src");
+            CommonHelper::assertNotEmpty($src, "not valid src: " . $src);
+
+            $content = file_get_contents($src);
+            CommonHelper::assertNotEmpty($content !== false, "cannot fetch content from " . $src);
+
+            $parseDown = new Parsedown;
+            $parseDown->setSafeMode(true)->setBreaksEnabled(true);
+            $content = $parseDown->text($content);
+
+            echo $content;
         } catch (\Exception $exception) {
             $this->_sayFail($exception->getMessage());
         }

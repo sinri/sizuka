@@ -8,6 +8,7 @@
 
 namespace sinri\sizuka\library;
 
+use Exception;
 use Mimey\MimeTypes;
 use OSS\Core\OssException;
 use OSS\OssClient;
@@ -49,7 +50,7 @@ class AliyunOSSLibrary
     {
         try {
             return $this->oss->doesObjectExist($this->bucket, $object);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             echo __METHOD__ . ' error: ' . $exception->getMessage();
             return false;
         }
@@ -85,7 +86,7 @@ class AliyunOSSLibrary
                 $options = array(OssClient::OSS_RANGE => $range_begin . '-' . $range_end);
             }
             return $this->oss->getObject($this->bucket, $object, $options);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return false;
         }
     }
@@ -152,7 +153,7 @@ class AliyunOSSLibrary
             }
 
             return $list;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return false;
         }
     }
@@ -188,12 +189,12 @@ class AliyunOSSLibrary
     /**
      * @param $object
      * @param int $timeout
-     * @throws \Exception
+     * @throws Exception
      */
     public function proxyObject($object, $timeout = 3600)
     {
         if (!$this->doesObjectExist($object)) {
-            throw new \Exception("It has been eaten by Giant Salamander!", 404);
+            throw new Exception("It has been eaten by Giant Salamander!", 404);
         }
 
         $meta = $this->oss->getObjectMeta($this->bucket, $object);
@@ -282,12 +283,12 @@ class AliyunOSSLibrary
     /**
      * @param string $object
      * @param int $timeout
-     * @throws \Exception
+     * @throws Exception
      */
     public function proxyDownloadObject($object, $timeout = 3600)
     {
         if (!$this->doesObjectExist($object)) {
-            throw new \Exception("It has been eaten by Giant Salamander!", 404);
+            throw new Exception("It has been eaten by Giant Salamander!", 404);
         }
         $meta = $this->oss->getObjectMeta($this->bucket, $object);
 
@@ -338,12 +339,12 @@ class AliyunOSSLibrary
      * Require `ffmpeg`
      * For Debian, `apt-get install ffmpeg`
      * @param $object
-     * @throws \Exception
+     * @throws Exception
      */
     public function getMp3ObjectDurationWithFFMpeg($object)
     {
         if (!$this->doesObjectExist($object)) {
-            throw new \Exception("-1", 404);
+            throw new Exception("-1", 404);
         }
 
         $url = $this->objectDownloadURL($object, 60 * 10);
