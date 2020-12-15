@@ -4,3 +4,4 @@ vendor/
 /debug/
 /log/
 /cache/
+composer.phar

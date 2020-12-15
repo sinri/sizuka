@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d53aac382fcbd9fc02f3768c8e2b2130",
+    "content-hash": "da62ce33f3795e2c845f607060a7d669",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
-            "version": "v2.3.1",
+            "version": "v2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-                "reference": "053d7ba9e798e4c09b9c5c1edab153d25ea9643a"
+                "reference": "492866331b7bafaac09506cf42f351b7e9e63766"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/053d7ba9e798e4c09b9c5c1edab153d25ea9643a",
-                "reference": "053d7ba9e798e4c09b9c5c1edab153d25ea9643a",
+                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/492866331b7bafaac09506cf42f351b7e9e63766",
+                "reference": "492866331b7bafaac09506cf42f351b7e9e63766",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -51,7 +51,11 @@
             ],
             "description": "Aliyun OSS SDK for PHP",
             "homepage": "http://www.aliyun.com/product/oss/",
-            "time": "2019-11-15T11:05:42+00:00"
+            "support": {
+                "issues": "https://github.com/aliyun/aliyun-oss-php-sdk/issues",
+                "source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.4.1"
+            },
+            "time": "2020-09-29T06:23:57+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -103,20 +107,24 @@
                 "markdown",
                 "parser"
             ],
+            "support": {
+                "issues": "https://github.com/erusev/parsedown/issues",
+                "source": "https://github.com/erusev/parsedown/tree/1.7.x"
+            },
             "time": "2019-12-30T22:54:17+00:00"
         },
         {
             "name": "jaybizzle/crawler-detect",
-            "version": "v1.2.95",
+            "version": "v1.2.103",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JayBizzle/Crawler-Detect.git",
-                "reference": "a7936c4b60c78f8ae9024eeecf7e8d4cf470b730"
+                "reference": "3efa2860959cc971f17624b40bf0699823f9d0f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JayBizzle/Crawler-Detect/zipball/a7936c4b60c78f8ae9024eeecf7e8d4cf470b730",
-                "reference": "a7936c4b60c78f8ae9024eeecf7e8d4cf470b730",
+                "url": "https://api.github.com/repos/JayBizzle/Crawler-Detect/zipball/3efa2860959cc971f17624b40bf0699823f9d0f3",
+                "reference": "3efa2860959cc971f17624b40bf0699823f9d0f3",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -129,8 +137,7 @@
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8|^5.5|^6.5",
-                "satooshi/php-coveralls": "1.*"
+                "phpunit/phpunit": "^4.8|^5.5|^6.5"
             },
             "type": "library",
             "autoload": {
@@ -158,20 +165,24 @@
                 "crawlerdetect",
                 "php crawler detect"
             ],
-            "time": "2020-04-14T20:42:56+00:00"
+            "support": {
+                "issues": "https://github.com/JayBizzle/Crawler-Detect/issues",
+                "source": "https://github.com/JayBizzle/Crawler-Detect/tree/v1.2.103"
+            },
+            "time": "2020-11-23T19:49:25+00:00"
         },
         {
             "name": "jenssegers/agent",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jenssegers/agent.git",
-                "reference": "bcb895395e460478e101f41cdab139c48dc721ce"
+                "reference": "daa11c43729510b3700bc34d414664966b03bffe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jenssegers/agent/zipball/bcb895395e460478e101f41cdab139c48dc721ce",
-                "reference": "bcb895395e460478e101f41cdab139c48dc721ce",
+                "url": "https://api.github.com/repos/jenssegers/agent/zipball/daa11c43729510b3700bc34d414664966b03bffe",
+                "reference": "daa11c43729510b3700bc34d414664966b03bffe",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -190,7 +201,7 @@
                 "phpunit/phpunit": "^5.0|^6.0|^7.0"
             },
             "suggest": {
-                "illuminate/support": "^4.0|^5.0"
+                "illuminate/support": "Required for laravel service providers"
             },
             "type": "library",
             "extra": {
@@ -233,7 +244,21 @@
                 "user agent",
                 "useragent"
             ],
-            "time": "2019-01-19T21:32:55+00:00"
+            "support": {
+                "issues": "https://github.com/jenssegers/agent/issues",
+                "source": "https://github.com/jenssegers/agent/tree/v2.6.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/jenssegers",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/jenssegers/agent",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-06-13T08:05:20+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -291,20 +316,24 @@
                 "mobile detector",
                 "php mobile detect"
             ],
+            "support": {
+                "issues": "https://github.com/serbanghita/Mobile-Detect/issues",
+                "source": "https://github.com/serbanghita/Mobile-Detect/tree/2.8.34"
+            },
             "time": "2019-09-18T18:44:20+00:00"
         },
         {
-            "name": "phpmailer/phpmailer",
-            "version": "v6.1.6",
+            "name": "psr/log",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3"
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3",
-                "reference": "c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -314,52 +343,97 @@
                 ]
             },
             "require": {
-                "ext-ctype": "*",
-                "ext-filter": "*",
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "doctrine/annotations": "^1.2",
-                "friendsofphp/php-cs-fixer": "^2.2",
-                "phpunit/phpunit": "^4.8 || ^5.7"
-            },
-            "suggest": {
-                "ext-mbstring": "Needed to send email in multibyte encoding charset",
-                "hayageek/oauth2-yahoo": "Needed for Yahoo XOAUTH2 authentication",
-                "league/oauth2-google": "Needed for Google XOAUTH2 authentication",
-                "psr/log": "For optional PSR-3 debug logging",
-                "stevenmaguire/oauth2-microsoft": "Needed for Microsoft XOAUTH2 authentication",
-                "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled (^1.2)"
+                "php": ">=5.3.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "PHPMailer\\PHPMailer\\": "src/"
+                    "Psr\\Log\\": "Psr/Log/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL-2.1-only"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Marcus Bointon",
-                    "email": "phpmailer@synchromedia.co.uk"
-                },
-                {
-                    "name": "Jim Jagielski",
-                    "email": "jimjag@gmail.com"
-                },
-                {
-                    "name": "Andy Prevost",
-                    "email": "codeworxtech@users.sourceforge.net"
-                },
-                {
-                    "name": "Brent R. Matzelle"
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
                 }
             ],
-            "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2020-05-27T12:24:03+00:00"
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/1.1.3"
+            },
+            "time": "2020-03-23T09:12:05+00:00"
+        },
+        {
+            "name": "psr/simple-cache",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/simple-cache.git",
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\SimpleCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interfaces for simple caching",
+            "keywords": [
+                "cache",
+                "caching",
+                "psr",
+                "psr-16",
+                "simple-cache"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/simple-cache/tree/master"
+            },
+            "time": "2017-10-23T01:57:42+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -405,6 +479,10 @@
                 }
             ],
             "description": "A polyfill for getallheaders.",
+            "support": {
+                "issues": "https://github.com/ralouphie/getallheaders/issues",
+                "source": "https://github.com/ralouphie/getallheaders/tree/2.0.5"
+            },
             "time": "2016-02-11T07:05:27+00:00"
         },
         {
@@ -451,20 +529,24 @@
                 }
             ],
             "description": "PHP package for converting file extensions to MIME types and vice versa.",
+            "support": {
+                "issues": "https://github.com/ralouphie/mimey/issues",
+                "source": "https://github.com/ralouphie/mimey/tree/master"
+            },
             "time": "2017-01-27T20:57:22+00:00"
         },
         {
-            "name": "sinri/enoch",
-            "version": "2.4.3",
+            "name": "sinri/ark",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sinri/enoch.git",
-                "reference": "203d52e1c51324705dc85ac1a162d2cc9591b1b3"
+                "url": "https://github.com/sinri/Ark.git",
+                "reference": "50a2fd1c3f3a4b7a88d9aebd34fa071152de1eab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sinri/enoch/zipball/203d52e1c51324705dc85ac1a162d2cc9591b1b3",
-                "reference": "203d52e1c51324705dc85ac1a162d2cc9591b1b3",
+                "url": "https://api.github.com/repos/sinri/Ark/zipball/50a2fd1c3f3a4b7a88d9aebd34fa071152de1eab",
+                "reference": "50a2fd1c3f3a4b7a88d9aebd34fa071152de1eab",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -474,21 +556,39 @@
                 ]
             },
             "require": {
-                "ext-curl": "*",
                 "ext-json": "*",
-                "ext-pdo": "*",
-                "php": ">=5.4.0",
-                "phpmailer/phpmailer": "~6.0",
-                "ralouphie/getallheaders": "^2.0"
+                "jenssegers/agent": "^2.6",
+                "php": "~7.0",
+                "ralouphie/getallheaders": "^2.0",
+                "ralouphie/mimey": "^1.0",
+                "sinri/ark-cache": "~2.4",
+                "sinri/ark-core": "~2.7.5",
+                "sinri/ark-web": "~3.4.0"
             },
             "require-dev": {
-                "cebe/markdown": "^1.1",
-                "predis/predis": "^1.1"
+                "ext-curl": "*",
+                "sinri/ark-curl": "~2.1",
+                "sinri/ark-pdo": "~1.7",
+                "sinri/ark-queue": "~2.5"
+            },
+            "suggest": {
+                "ext-pcntl": "*",
+                "sinri/ark-couchdb": "~1.0",
+                "sinri/ark-curl": "~2.1",
+                "sinri/ark-mail": "~1.2",
+                "sinri/ark-mysqli": "~1.2",
+                "sinri/ark-pdo": "~1.7",
+                "sinri/ark-qr-builder": "~1.0",
+                "sinri/ark-redis": "~1.1",
+                "sinri/ark-sqlite3": "~1.1"
             },
             "type": "library",
             "autoload": {
+                "psr-4": {
+                    "sinri\\ark\\": "src/"
+                },
                 "files": [
-                    "autoload.php"
+                    "src/QuickArk.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -498,17 +598,165 @@
             "authors": [
                 {
                     "name": "Sinri Edogawa",
-                    "email": "e.joshua.s.e@gmail.com",
-                    "homepage": "https://github.com/sinri/enoch",
-                    "role": "Developer"
+                    "email": "e.joshua.s.e@gmail.com"
                 }
             ],
-            "description": "PHP Framework for integrating",
-            "homepage": "https://github.com/sinri/enoch",
-            "keywords": [
-                "php-framework"
+            "description": "A fundamental toolkit for PHP.",
+            "support": {
+                "issues": "https://github.com/sinri/Ark/issues",
+                "source": "https://github.com/sinri/Ark/tree/master"
+            },
+            "time": "2020-08-17T04:30:24+00:00"
+        },
+        {
+            "name": "sinri/ark-cache",
+            "version": "2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sinri/Ark-Cache.git",
+                "reference": "08ef9f765dacab69d1bbc2969136ff08d694a69b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sinri/Ark-Cache/zipball/08ef9f765dacab69d1bbc2969136ff08d694a69b",
+                "reference": "08ef9f765dacab69d1bbc2969136ff08d694a69b",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "psr/simple-cache": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "sinri\\ark\\cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
             ],
-            "time": "2019-12-26T02:52:25+00:00"
+            "authors": [
+                {
+                    "name": "Sinri Edogawa",
+                    "email": "e.joshua.s.e@gmail.com"
+                }
+            ],
+            "description": "The cache component for Ark 2",
+            "support": {
+                "issues": "https://github.com/sinri/Ark-Cache/issues",
+                "source": "https://github.com/sinri/Ark-Cache/tree/master"
+            },
+            "time": "2020-06-29T02:46:34+00:00"
+        },
+        {
+            "name": "sinri/ark-core",
+            "version": "2.7.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sinri/Ark-Core.git",
+                "reference": "bd1f31844e584c6dde492bba3234630ebf854329"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sinri/Ark-Core/zipball/bd1f31844e584c6dde492bba3234630ebf854329",
+                "reference": "bd1f31844e584c6dde492bba3234630ebf854329",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-json": "*",
+                "psr/log": "~1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "sinri\\ark\\core\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sinri Edogawa",
+                    "email": "e.joshua.s.e@gmail.com"
+                }
+            ],
+            "description": "The core components of Ark 2",
+            "support": {
+                "issues": "https://github.com/sinri/Ark-Core/issues",
+                "source": "https://github.com/sinri/Ark-Core/tree/2.7.8"
+            },
+            "time": "2020-11-24T07:24:06+00:00"
+        },
+        {
+            "name": "sinri/ark-web",
+            "version": "3.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sinri/Ark-Web.git",
+                "reference": "8bdb0ed6c2f446677b8f6d2e45b47a194fa8f189"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sinri/Ark-Web/zipball/8bdb0ed6c2f446677b8f6d2e45b47a194fa8f189",
+                "reference": "8bdb0ed6c2f446677b8f6d2e45b47a194fa8f189",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-json": "*",
+                "jenssegers/agent": "^2.6",
+                "ralouphie/getallheaders": "^2.0",
+                "ralouphie/mimey": "^1.0",
+                "sinri/ark-core": "^2.7"
+            },
+            "require-dev": {
+                "sinri/ark-curl": "^2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "sinri\\ark\\web\\": "src/web/",
+                    "sinri\\ark\\io\\": "src/io/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sinri Edogawa",
+                    "email": "e.joshua.s.e@gmail.com"
+                }
+            ],
+            "description": "Ark Web Component",
+            "support": {
+                "issues": "https://github.com/sinri/Ark-Web/issues",
+                "source": "https://github.com/sinri/Ark-Web/tree/3.4.1"
+            },
+            "time": "2020-10-26T06:33:30+00:00"
         }
     ],
     "packages-dev": [],
@@ -521,5 +769,6 @@
         "ext-json": "*",
         "ext-mbstring": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }

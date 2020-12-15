@@ -1,14 +1,12 @@
 {
   "name": "sinri/sizuka",
-  "description": "a website for resource",
+  "description": "A website for resource on Aliyun OSS",
   "type": "project",
   "require": {
     "ext-json": "*",
     "ext-mbstring": "*",
-    "sinri/enoch": "^2.2",
-    "aliyuncs/oss-sdk-php": "~2.0",
-    "ralouphie/mimey": "^1.0",
-    "jenssegers/agent": "^2.5",
+    "sinri/ark": "~3.4.0",
+    "aliyuncs/oss-sdk-php": "~2.4.1",
     "erusev/parsedown": "^1.7"
   },
   "license": "GPLv3",
@@ -18,6 +16,11 @@
       "email": "e.joshua.s.e@gmail.com"
     }
   ],
+  "autoload": {
+    "psr-4": {
+      "sinri\\sizuka\\": ""
+    }
+  },
   "minimum-stability": "stable",
   "repositories": {
     "packagist": {

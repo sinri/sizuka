@@ -9,21 +9,28 @@
 namespace sinri\sizuka;
 
 
-use sinri\enoch\core\LibLog;
-use sinri\enoch\helper\CommonHelper;
-use sinri\enoch\service\FileCache;
+use Exception;
+use sinri\ark\cache\ArkCache;
 use sinri\sizuka\library\AliyunOSSLibrary;
 
+/**
+ * Class Sizuka
+ * @package sinri\sizuka
+ */
 class Sizuka
 {
+    /**
+     * @param array|scalar $keyChain
+     * @param null $default
+     * @return mixed
+     * @deprecated use Ark() instead
+     */
     public static function config($keyChain, $default = null)
     {
-        $config = [];
-        require __DIR__ . '/config/config.php';
-        return CommonHelper::safeReadNDArray($config, $keyChain, $default);
+        return Ark()->readConfig($keyChain, $default);
     }
 
-    public static function parseURL($gateway = '/index.php', &$path, &$queryString)
+    public static function parseURL($gateway = '/index.php', &$path = '', &$queryString = '')
     {
         $path = $_SERVER['REQUEST_URI'];
         if (strpos($path, $gateway) === 0) {
@@ -35,7 +42,13 @@ class Sizuka
         }
     }
 
-    public static function parseURLx($gateway = '/index.php', &$prefix, &$queryString)
+    /**
+     * @param string $gateway
+     * @param string $prefix
+     * @param string $queryString
+     * @deprecated seems no use
+     */
+    public static function parseURLx($gateway = '/index.php', &$prefix = '', &$queryString = '')
     {
         print_r($_SERVER);
 
@@ -58,8 +71,8 @@ class Sizuka
         try {
             //echo $object.PHP_EOL;
             $object = substr($object, strlen('/proxy/'));
-            (new AliyunOSSLibrary(self::config(['oss', 'bucket'])))->proxyObject($object, $timeout);
-        } catch (\Exception $exception) {
+            (new AliyunOSSLibrary(Ark()->readConfig(['oss', 'bucket'])))->proxyObject($object, $timeout);
+        } catch (Exception $exception) {
             self::errorPage($exception->getMessage(), 404);
         }
     }
@@ -69,8 +82,8 @@ class Sizuka
         try {
             //echo $object.PHP_EOL;
             $object = substr($object, strlen('/proxy_download/'));
-            (new AliyunOSSLibrary(self::config(['oss', 'bucket'])))->proxyDownloadObject($object, $timeout);
-        } catch (\Exception $exception) {
+            (new AliyunOSSLibrary(Ark()->readConfig(['oss', 'bucket'])))->proxyDownloadObject($object, $timeout);
+        } catch (Exception $exception) {
             self::errorPage($exception->getMessage(), 404);
         }
     }
@@ -80,8 +93,8 @@ class Sizuka
         try {
             //echo $object.PHP_EOL;
             $object = substr($object, strlen('/proxy_mp3_duration/'));
-            (new AliyunOSSLibrary(self::config(['oss', 'bucket'])))->getMp3ObjectDurationWithFFMpeg($object);
-        } catch (\Exception $exception) {
+            (new AliyunOSSLibrary(Ark()->readConfig(['oss', 'bucket'])))->getMp3ObjectDurationWithFFMpeg($object);
+        } catch (Exception $exception) {
             self::errorPage($exception->getMessage(), 404);
         }
     }
@@ -92,31 +105,26 @@ class Sizuka
         echo $error;
     }
 
-    private static $logger = null;
-
     /**
      * @param $level
      * @param $message
      * @param string $object
+     * @deprecated use Ark() instead
      */
     public static function log($level, $message, $object = '')
     {
-        if (!self::$logger) {
-            self::$logger = new LibLog(self::config(['log', 'dir'], __DIR__ . '/log'));
+        if (!is_array($object)) {
+            $object = ['auto_object' => $object];
         }
-        self::$logger->log($level, $message, $object);
+        Ark()->logger('sizuka')->log($level, $message, $object);
     }
 
-    private static $file_cache = null;
-
     /**
-     * @return null|FileCache
+     * @return ArkCache
+     * @deprecated use Ark() instead
      */
-    public static function getCacheAgent()
+    public static function getCacheAgent(): ArkCache
     {
-        if (!self::$file_cache) {
-            self::$file_cache = new FileCache(self::config(['cache', 'dir'], __DIR__ . '/cache'));
-        }
-        return self::$file_cache;
+        return Ark()->cache('sizuka');
     }
 }

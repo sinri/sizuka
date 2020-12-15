@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Sizuka</title>
-    <script src="//unpkg.com/vue@2.5.16/dist/vue.js"></script>
-    <script src="//unpkg.com/axios@0.18.0/dist/axios.js"></script>
+    <!--    <script src="//unpkg.com/vue@2.5.16/dist/vue.js"></script>-->
+    <!--    <script src="//unpkg.com/axios@0.18.0/dist/axios.js"></script>-->
+    <script src="static/vue-2.5.13.js"></script>
+    <script src="static/axios.js"></script>
     <script src="static/js.cookie.min.js"></script>
 
     <!-- import stylesheet -->
@@ -35,7 +37,7 @@
         </i-col>
         <i-col span="2">&nbsp;</i-col>
     </Row>
-    <Row>
+    <Row v-if="is_public || token_written">
         <i-col span="2">&nbsp;</i-col>
         <i-col span="20" style="padding: 20px;border-bottom: 1px solid gray;">
             <Row style="margin: 20px 0">
@@ -61,7 +63,7 @@
             </Row>
             <Row>
                 <i-col span="24">
-                    <Alert type="error" v-if="message.length>0">{{message}}</Alert>
+                    <Alert type="error" v-if="message!==''">{{message}}</Alert>
                 </i-col>
             </Row>
             <Row>
@@ -82,16 +84,45 @@
                 <i-col :span="preview_span">
                     <Card style="width: 100%;min-height: 500px;">
                         <div slot="title">
-                            <i-switch v-model="tree_switch" @on-change="change_tree_switch">
-                                <span slot="open"><Icon type="android-arrow-back"></Icon></span>
-                                <span slot="close"><Icon type="android-arrow-forward"></Icon></span>
-                            </i-switch>
-                            <!--<i-button v-on:click="change_tree_switch">-->
-                            <!--<template v-if="tree_switch">Hide</template>-->
-                            <!--<template v-else>Show</template>-->
-                            <!--</i-button>-->
-                            <Icon type="easel"></Icon>
-                            Preview
+                            <Row>
+                                <i-col span="24">
+                                    <i-switch @on-change="change_tree_switch" v-model="tree_switch">
+                                        <span slot="open"><Icon type="android-arrow-back"></Icon></span>
+                                        <span slot="close"><Icon type="android-arrow-forward"></Icon></span>
+                                    </i-switch>
+                                    <!--<i-button v-on:click="change_tree_switch">-->
+                                    <!--<template v-if="tree_switch">Hide</template>-->
+                                    <!--<template v-else>Show</template>-->
+                                    <!--</i-button>-->
+                                    <Icon type="easel"></Icon>
+                                    Preview
+                                </i-col>
+                                <i-col span="24"
+                                       style="margin-top:20px;padding-top:10px;border-top: 1px solid lightgray;"
+                                       v-if="opened_object_path!=''">
+                                    <p>Object: <span>{{opened_object_path}}</span></p>
+                                    <div v-if="opened_object_meta!==null">
+                                        <p>Date: {{opened_object_meta.local_time}}</p>
+                                        <p>Size: {{opened_object_meta['computed_size']}}</p>
+                                        <p>
+                                            URL:
+                                            <a :href="opened_object_meta?.info?.url">
+                                                <template v-if="opened_object_meta?.info?.url.length>60">
+                                                    {{opened_object_meta.info.url.substr(0,30)}}
+                                                    ...
+                                                    {{opened_object_meta.info.url.substr(-30)}}
+                                                </template>
+                                                <template v-else>
+                                                    {{opened_object_meta?.info?.url}}
+                                                </template>
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div v-else>
+                                        <p>Not Loaded Yet ...</p>
+                                    </div>
+                                </i-col>
+                            </Row>
                         </div>
                         <div slot="extra">
                             <i-button type="ghost" icon="ios-cloud-download" @click="open_download_directly">Download
@@ -135,6 +166,7 @@
             object_tree: null,
             message: '',
             opened_object_path: '',
+            opened_object_meta: null,
             preview_url: '',
             direct_download_url: '',
             tree_switch: true,
@@ -172,6 +204,7 @@
                 });
             },
             explore: function (ignore_cache) {
+                console.log('explore token_written is ', this.token_written)
                 if (
                     this.token_written
                 //Cookies.get("sizuka_token")
@@ -179,7 +212,7 @@
                     axios.get(
                         '../Api/explorer?force_update=' + (ignore_cache ? 'YES' : 'NO')
                     ).then((res) => {
-                        console.log('success', res);
+                        console.log('api [explorer] response here', res);
                         if (res.data.code !== 'OK') {
                             //alert('Explore Failed!');
                             this.message = res.data.data;
@@ -198,12 +231,55 @@
                 }
             },
             open_object: function (node) {
-                this.opened_object_path = node[0].path + (node[0].path.substr(-1) === '/' ? 'index.html' : '');
-                //this.preview_url = "../proxy/" + this.opened_object_path;
+                this.message = '';
+                this.opened_object_meta = null;
+                if (node[0].path.substr(-1) === '/') {
+                    // is dir
+                    this.opened_object_path = node[0].path + 'index.html';
+                } else {
+                    // is file
+                    this.opened_object_path = node[0].path;
+                    this.fetch_object_meta();
+                }
+                // this.opened_object_path = node[0].path + (node[0].path.substr(-1) === '/' ? 'index.html' : '');
                 this.preview_url = "../Api/previewUrlForObject?object=" + encodeURIComponent(this.opened_object_path);
                 this.direct_download_url = "../Api/directlyDownloadUrlForObject?object=" + encodeURIComponent(this.opened_object_path);
                 console.log("open_object", this.preview_url);
-                //window.open("../proxy/" + node[0].path);
+            },
+            fetch_object_meta: function () {
+                this.opened_object_meta = null;
+                axios.get(
+                    '../Api/getObjectMeta?object=' + encodeURIComponent(this.opened_object_path)
+                ).then((res) => {
+                    console.log('api [getObjectMeta] response here', res);
+                    if (res.data.code !== 'OK') {
+                        //alert('Explore Failed!');
+                        this.message = res.data.data;
+                    } else {
+                        let meta = res.data.data.meta;
+                        if (meta?.info?.url?.length > 0) {
+                            if (meta.info.url.substr(0, 4) === 'http' && meta.info.url.substr(0, 5) !== 'https') {
+                                meta.info.url = 'https' + meta.info.url.substr(4)
+                            }
+                        }
+                        if (meta['content-length'] > 1024 * 1024 * 1024) {
+                            meta['computed_size'] = meta['content-length'] / (1024 * 1024 * 1024.0) + " GB";
+                        } else if (meta['content-length'] > 1024 * 1024) {
+                            meta['computed_size'] = meta['content-length'] / (1024 * 1024.0) + "MB";
+                        } else if (meta['content-length'] > 1024) {
+                            meta['computed_size'] = meta['content-length'] / (1024.0) + "KB";
+                        } else {
+                            meta['computed_size'] = meta['content-length'] + "Bytes";
+                        }
+                        meta['local_time'] = (new Date(meta['date'])).toLocaleString();
+
+                        this.opened_object_meta = meta
+                        this.message = '';
+                    }
+                }).catch((res) => {
+                    console.log('error', res);
+                    this.message = 'ajax error';
+                });
             },
             open_content: function () {
                 window.open(this.preview_url);
@@ -228,16 +304,18 @@
                 this.update_token_written();
                 if (this.token_written) {
                     Cookies.remove('sizuka_token');
+                    this.update_token_written();
                 } else {
                     let token = prompt("Set your identity token below");
                     if (token === '') {
                         alert('Empty string received, you are still not login!');
+                        this.update_token_written();
                     } else {
                         Cookies.set('sizuka_token', token, {expires: 1});
+                        this.update_token_written();
                         this.explore();
                     }
                 }
-                this.update_token_written();
             },
             update_token_written: function () {
                 let token = Cookies.get("sizuka_token");

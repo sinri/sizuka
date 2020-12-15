@@ -9,7 +9,7 @@
 namespace sinri\sizuka\library;
 
 
-use sinri\enoch\helper\CommonHelper;
+use sinri\ark\core\ArkHelper;
 
 class OSSObjectTreeNode
 {
@@ -42,10 +42,10 @@ class OSSObjectTreeNode
 
     public function __construct($path, $expand, $meta = null)
     {
-        $this->metaKey = CommonHelper::safeReadArray($meta, 'key', $path);
-        $this->metaLastModified = CommonHelper::safeReadArray($meta, 'last_modified', 'Unknown');
-        $this->metaSize = CommonHelper::safeReadArray($meta, 'size', 'Unknown');
-        $this->metaType = CommonHelper::safeReadArray($meta, 'type', 'Unknown');
+        $this->metaKey = ArkHelper::readTarget($meta, 'key', $path);
+        $this->metaLastModified = ArkHelper::readTarget($meta, 'last_modified', 'Unknown');
+        $this->metaSize = ArkHelper::readTarget($meta, 'size', 'Unknown');
+        $this->metaType = ArkHelper::readTarget($meta, 'type', 'Unknown');
 
         $components = explode("/", $path);
         $last_component = $components[count($components) - 1];
@@ -64,7 +64,7 @@ class OSSObjectTreeNode
 
     public function rootLoadItem($meta)
     {
-        $object = CommonHelper::safeReadArray($meta, 'key');
+        $object = ArkHelper::readTarget($meta, 'key');
         $components = explode("/", $object);
         $last_component = $components[count($components) - 1];
         $dir_link = $components;
@@ -93,7 +93,7 @@ class OSSObjectTreeNode
         $node->children[] = new OSSObjectTreeNode($object, false, $meta);
     }
 
-    public function toJsonObject()
+    public function toJsonObject(): array
     {
         $title = $this->objectName;
 //        $title .= " - - - ";

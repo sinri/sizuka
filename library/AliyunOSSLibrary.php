@@ -12,10 +12,7 @@ use Exception;
 use Mimey\MimeTypes;
 use OSS\Core\OssException;
 use OSS\OssClient;
-use sinri\enoch\core\LibLog;
-use sinri\enoch\core\LibRequest;
-use sinri\enoch\helper\CommonHelper;
-use sinri\sizuka\Sizuka;
+use sinri\ark\core\ArkHelper;
 
 class AliyunOSSLibrary
 {
@@ -24,29 +21,29 @@ class AliyunOSSLibrary
 
     /**
      * AliyunOSSLibrary constructor.
-     * @param null $bucket
+     * @param string $bucket
      * @throws OssException
      */
     public function __construct($bucket = null)
     {
-        $accessKeyId = Sizuka::config(['oss', 'AccessKeyId']);//"<您从OSS获得的AccessKeyId>";
-        $accessKeySecret = Sizuka::config(['oss', 'AccessKeySecret']);//"<您从OSS获得的AccessKeySecret>";
-        $endpoint = Sizuka::config(['oss', 'endpoint']);//"<您选定的OSS数据中心访问域名，例如http://oss-cn-hangzhou.aliyuncs.com>";
+        $accessKeyId = Ark()->readConfig(['oss', 'AccessKeyId']);//"<您从OSS获得的AccessKeyId>";
+        $accessKeySecret = Ark()->readConfig(['oss', 'AccessKeySecret']);//"<您从OSS获得的AccessKeySecret>";
+        $endpoint = Ark()->readConfig(['oss', 'endpoint']);//"<您选定的OSS数据中心访问域名，例如http://oss-cn-hangzhou.aliyuncs.com>";
         $this->oss = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
         if (!$this->oss) {
             throw new OssException("oss client failed to be created");
         }
         if ($bucket === null) {
-            $bucket = Sizuka::config(['oss', 'bucket']);
+            $bucket = Ark()->readConfig(['oss', 'bucket']);
         }
         $this->bucket = $bucket;
     }
 
     /**
-     * @param $object
+     * @param string $object
      * @return bool
      */
-    public function doesObjectExist($object)
+    public function doesObjectExist(string $object): bool
     {
         try {
             return $this->oss->doesObjectExist($this->bucket, $object);
@@ -64,8 +61,7 @@ class AliyunOSSLibrary
     public function objectDownloadURL($object, $timeout = 3600)
     {
         try {
-            $signedUrl = $this->oss->signUrl($this->bucket, $object, $timeout);
-            return $signedUrl;
+            return $this->oss->signUrl($this->bucket, $object, $timeout);
         } catch (OssException $e) {
             //echo __METHOD__.' error: '.$e->getMessage();
             return false;
@@ -158,26 +154,8 @@ class AliyunOSSLibrary
         }
     }
 
-    public function makeObjectTree($list)
+    public function makeObjectTree($list): OSSObjectTreeNode
     {
-//        $tree=[];
-//        foreach ($list as $item){
-//            $components=explode("/",$item);
-//            $last_component=$components[count($components)-1];
-//            $dir_link=$components;
-//            unset($dir_link[count($dir_link)-1]);
-//            $dir_existed=CommonHelper::safeReadNDArray($tree,$dir_link,[]);
-//            if($last_component===''){
-//                // is a directory
-//                if(empty($dir_existed)){
-//                    CommonHelper::safeWriteNDArray($tree,$dir_link,$dir_existed);
-//                }
-//            }else{
-//                $dir_existed[]=$last_component;
-//                CommonHelper::safeWriteNDArray($tree,$dir_link,$dir_existed);
-//            }
-//        }
-
         $tree = new OSSObjectTreeNode("ROOT//", true);
         foreach ($list as $item) {
             $tree->rootLoadItem($item);
@@ -199,12 +177,15 @@ class AliyunOSSLibrary
 
         $meta = $this->oss->getObjectMeta($this->bucket, $object);
 
-        Sizuka::log(LibLog::LOG_INFO, "meta of object: " . $object, $meta);
+        Ark()->logger('proxy')->info("meta of object: " . $object, ['meta' => $meta]);
 
         $content_type = $meta['content-type'];
         $content_length = $meta['content-length'];
 
-        Sizuka::log(LibLog::LOG_INFO, 'content_type from oss meta api for ' . $object, $content_type);
+        Ark()->logger('proxy')->info(
+            'content_type from oss meta api for ' . $object,
+            ['content-type' => $content_type, 'content-length' => $content_length]
+        );
 
         $ext = pathinfo($object, PATHINFO_EXTENSION);
         $ext = strtolower($ext);
@@ -215,7 +196,7 @@ class AliyunOSSLibrary
             // Convert extension to MIME type:
             $content_type = $mimes->getMimeType($ext); // application/json
 
-            Sizuka::log(LibLog::LOG_INFO, 'content_type from mime ext', $content_type);
+            Ark()->logger('proxy')->info('content_type from mime ext', ['content_type' => $content_type]);
         }
 
         $url = $this->objectDownloadURL($object, $timeout);
@@ -225,11 +206,12 @@ class AliyunOSSLibrary
         }
 
         if (in_array($ext, ['mp3', 'mp4'])) {
-            preg_match('/bytes=(\d+)\-(\d*)/', LibRequest::getServerVar('HTTP_RANGE', ''), $matches);
-            Sizuka::log(LibLog::LOG_INFO, 'HTTP_RANGE', LibRequest::getServerVar('HTTP_RANGE', ''));
-            Sizuka::log(LibLog::LOG_INFO, "matches", $matches);
-            $range_begin = CommonHelper::safeReadArray($matches, 1, 0);
-            $range_end = CommonHelper::safeReadArray($matches, 2, 0);
+            $server_http_range = Ark()->webInput()->readServer('HTTP_RANGE', '');
+            preg_match('/bytes=(\d+)-(\d*)/', $server_http_range, $matches);
+            Ark()->logger('proxy')->info('HTTP_RANGE', $server_http_range);
+            Ark()->logger('proxy')->info("matches", $matches);
+            $range_begin = ArkHelper::readTarget($matches, 1, 0);
+            $range_end = ArkHelper::readTarget($matches, 2, 0);
             if ($range_end <= 0) {
                 //$range_end = $content_length - 1;
                 $range_end = min($content_length - 1, $range_begin + 51200);//why this would cause problem
@@ -244,7 +226,10 @@ class AliyunOSSLibrary
             header("Content-Length: " . ($range_end - $range_begin + 1)
             /*$content_length*/);
 
-            Sizuka::log(LibLog::LOG_INFO, "proxy header list for object: " . $object, headers_list());
+            Ark()->logger('proxy')->info(
+                "proxy header list for object: " . $object,
+                ['headers' => headers_list()]
+            );
 
             echo $this->readObject($object, $range_begin, $range_end);
 
@@ -265,7 +250,10 @@ class AliyunOSSLibrary
             header("Content-Type: " . $content_type);
             header("Content-Length: " . $content_length);
 
-            Sizuka::log(LibLog::LOG_INFO, "proxy header list for object: " . $object, headers_list());
+            Ark()->logger('proxy')->info(
+                "proxy header list for object: " . $object,
+                ['headers' => headers_list()]
+            );
 
             $fp = fopen($url, "r");
             $buffer = 1024;
@@ -285,19 +273,22 @@ class AliyunOSSLibrary
      * @param int $timeout
      * @throws Exception
      */
-    public function proxyDownloadObject($object, $timeout = 3600)
+    public function proxyDownloadObject(string $object, $timeout = 3600)
     {
         if (!$this->doesObjectExist($object)) {
             throw new Exception("It has been eaten by Giant Salamander!", 404);
         }
         $meta = $this->oss->getObjectMeta($this->bucket, $object);
 
-        Sizuka::log(LibLog::LOG_INFO, "meta of object: " . $object, $meta);
+        Ark()->logger('proxy')->info("meta of object: " . $object, ['meta' => $meta]);
 
         $content_type = $meta['content-type'];
         $content_length = $meta['content-length'];
 
-        Sizuka::log(LibLog::LOG_INFO, 'content_type from oss meta api for ' . $object, $content_type);
+        Ark()->logger('proxy')->info(
+            'content_type from oss meta api for ' . $object,
+            ['content-type' => $content_type, 'content_length' => $content_length]
+        );
 
         $ext = pathinfo($object, PATHINFO_EXTENSION);
         $ext = strtolower($ext);
@@ -308,7 +299,7 @@ class AliyunOSSLibrary
             // Convert extension to MIME type:
             $content_type = $mimes->getMimeType($ext); // application/json
 
-            Sizuka::log(LibLog::LOG_INFO, 'content_type from mime ext', $content_type);
+            Ark()->logger('proxy')->info('content_type from mime ext', ['content_type' => $content_type]);
         }
 
         $url = $this->objectDownloadURL($object, $timeout);
@@ -321,7 +312,10 @@ class AliyunOSSLibrary
         header("Content-Type: " . $content_type);
         header("Content-Length: " . $content_length);
 
-        Sizuka::log(LibLog::LOG_INFO, "proxy header list for object: " . $object, headers_list());
+        Ark()->logger('proxy')->info(
+            "proxy header list for object: " . $object,
+            ['headers' => headers_list()]
+        );
 
         $fp = fopen($url, "r");
         $buffer = 1024;
@@ -361,5 +355,21 @@ class AliyunOSSLibrary
         }
 
         echo $seconds;
+    }
+
+    public function getObjectMeta(string $object)
+    {
+        return $this->oss->getObjectMeta($this->bucket, $object);
+    }
+
+    /**
+     * @param string $object
+     * @param int $timeout
+     * @return string
+     * @throws OssException
+     */
+    public function getSignedUrl(string $object, $timeout = 600)
+    {
+        return $this->oss->signUrl($this->bucket, $object, $timeout);
     }
 }
