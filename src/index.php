@@ -8,7 +8,6 @@
 
 //error_reporting(E_ALL^E_NOTICE^E_WARNING);
 use Jenssegers\Agent\Agent;
-use Psr\Log\LogLevel;
 use sinri\ark\core\ArkHelper;
 use sinri\ark\web\implement\ArkRouteErrorHandlerAsJson;
 use sinri\sizuka\middleware\SizukaMiddleware;
@@ -50,9 +49,10 @@ if (strpos($path, '/proxy') === 0) {
 } else {
     $router = Ark()->webService()->getRouter();
     $router->setErrorHandler(new ArkRouteErrorHandlerAsJson());
-    $webLogger = Ark()->logger('web')->setIgnoreLevel(LogLevel::DEBUG);
+    $webLogger = Ark()->logger('web');
+//    $webLogger->setIgnoreLevel(LogLevel::DEBUG);
+//    $router->setDebug(true);
     $router->setLogger($webLogger);
-    $router->setDebug(true);
 
     $router->any(
         "",

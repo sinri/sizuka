@@ -5,8 +5,29 @@
     <option name="CUSTOM_SCOPE_NAME" value="Unnamed" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4172fcfa-23fb-413b-b126-18f7b3077c1e" name="Default Changelist" comment="refine">
+    <list default="true" id="4172fcfa-23fb-413b-b126-18f7b3077c1e" name="Default Changelist" comment="rm phar">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sizuka.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sizuka.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sizuka.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sizuka.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoload.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/autoload.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.sample.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.sample.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/Api.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/audio_player.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/audio_player.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index-mobile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/index-mobile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index-traditional.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/index-traditional.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/ios_video_player.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/ios_video_player.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/object.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/object.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/static/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/axios.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/static/axios.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/js.cookie.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/static/js.cookie.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/vue-2.5.13.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/static/vue-2.5.13.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/AliyunOSSLibrary.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/library/AliyunOSSLibrary.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/OSSObjectTreeNode.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/library/OSSObjectTreeNode.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/SizukaMiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware/SizukaMiddleware.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +98,11 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -85,7 +111,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1607935082512</updated>
-      <workItem from="1607935083720" duration="16961000" />
+      <workItem from="1607935083720" duration="18639000" />
     </task>
     <task id="LOCAL-00001" summary="refine">
       <created>1608004724567</created>
@@ -119,7 +145,8 @@
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="refine" />
-    <option name="LAST_COMMIT_MESSAGE" value="refine" />
+    <MESSAGE value="rm phar" />
+    <option name="LAST_COMMIT_MESSAGE" value="rm phar" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

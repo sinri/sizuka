@@ -195,7 +195,7 @@ class Api extends ArkWebController
 
             $lib = (new AliyunOSSLibrary());
             $meta = $lib->getObjectMeta($object);
-            $signed_url = $lib->getSignedUrl($object, $lifetime);
+            $signed_url = $lib->objectDownloadURL($object, $lifetime);
 
             $this->_sayOK(['meta' => $meta, 'object' => $object, 'signed_url' => $signed_url]);
         } catch (Exception $exception) {

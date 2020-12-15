@@ -23,9 +23,9 @@ $config['oss'] = [
     'AccessKeyId' => '?',
     'AccessKeySecret' => '?',
     // inner
-    //'endpoint'=>'oss-cn-hangzhou-internal.aliyuncs.com',
+    'endpoint_internal' => 'oss-cn-hangzhou-internal.aliyuncs.com',
     // outer
-    'endpoint' => 'oss-cn-hangzhou.aliyuncs.com',
+    'endpoint_public' => 'oss-cn-hangzhou.aliyuncs.com',
     'bucket' => 'tata-design',
 ];
 

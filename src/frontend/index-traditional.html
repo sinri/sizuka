@@ -153,7 +153,7 @@
         //         "<p>你的浏览器不支持audio标签</p>" +
         //         "</audio>";
 
-            code += "<a href='./audio_player.html?link=" + encodeURIComponent(preview_url) + "' target='_blank'>Open Audio Player</a>";
+            code += "<a href=" + encodeURIComponent(preview_url) + "'audio_player.html?link=' target='_blank'>Open Audio Player</a>";
             code += "</div>";
         }
         if (node.children) {

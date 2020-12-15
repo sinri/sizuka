@@ -16,27 +16,56 @@ use sinri\ark\core\ArkHelper;
 
 class AliyunOSSLibrary
 {
-    protected $oss;
+    protected $internalOSSClient = null;
+    protected $publicOSSClient = null;
     protected $bucket;
 
     /**
      * AliyunOSSLibrary constructor.
      * @param string $bucket
-     * @throws OssException
      */
     public function __construct($bucket = null)
     {
-        $accessKeyId = Ark()->readConfig(['oss', 'AccessKeyId']);//"<您从OSS获得的AccessKeyId>";
-        $accessKeySecret = Ark()->readConfig(['oss', 'AccessKeySecret']);//"<您从OSS获得的AccessKeySecret>";
-        $endpoint = Ark()->readConfig(['oss', 'endpoint']);//"<您选定的OSS数据中心访问域名，例如http://oss-cn-hangzhou.aliyuncs.com>";
-        $this->oss = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
-        if (!$this->oss) {
-            throw new OssException("oss client failed to be created");
-        }
         if ($bucket === null) {
             $bucket = Ark()->readConfig(['oss', 'bucket']);
         }
         $this->bucket = $bucket;
+    }
+
+    /**
+     * @return OssClient
+     * @throws OssException
+     */
+    protected function getInternalOssClient()
+    {
+        if ($this->internalOSSClient === null) {
+            $accessKeyId = Ark()->readConfig(['oss', 'AccessKeyId']);//"<您从OSS获得的AccessKeyId>";
+            $accessKeySecret = Ark()->readConfig(['oss', 'AccessKeySecret']);//"<您从OSS获得的AccessKeySecret>";
+            $endpoint_internal = Ark()->readConfig(['oss', 'endpoint_internal']);
+            $this->internalOSSClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint_internal);
+            if (!$this->internalOSSClient) {
+                throw new OssException("oss client failed to be created");
+            }
+        }
+        return $this->internalOSSClient;
+    }
+
+    /**
+     * @return OssClient
+     * @throws OssException
+     */
+    protected function getPublicOssClient()
+    {
+        if ($this->publicOSSClient === null) {
+            $accessKeyId = Ark()->readConfig(['oss', 'AccessKeyId']);//"<您从OSS获得的AccessKeyId>";
+            $accessKeySecret = Ark()->readConfig(['oss', 'AccessKeySecret']);//"<您从OSS获得的AccessKeySecret>";
+            $endpoint_public = Ark()->readConfig(['oss', 'endpoint_public']);
+            $this->publicOSSClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint_public);
+            if (!$this->publicOSSClient) {
+                throw new OssException("oss client failed to be created");
+            }
+        }
+        return $this->publicOSSClient;
     }
 
     /**
@@ -46,7 +75,7 @@ class AliyunOSSLibrary
     public function doesObjectExist(string $object): bool
     {
         try {
-            return $this->oss->doesObjectExist($this->bucket, $object);
+            return $this->getInternalOssClient()->doesObjectExist($this->bucket, $object);
         } catch (Exception $exception) {
             echo __METHOD__ . ' error: ' . $exception->getMessage();
             return false;
@@ -61,7 +90,7 @@ class AliyunOSSLibrary
     public function objectDownloadURL($object, $timeout = 3600)
     {
         try {
-            return $this->oss->signUrl($this->bucket, $object, $timeout);
+            return $this->getPublicOssClient()->signUrl($this->bucket, $object, $timeout);
         } catch (OssException $e) {
             //echo __METHOD__.' error: '.$e->getMessage();
             return false;
@@ -81,7 +110,7 @@ class AliyunOSSLibrary
             if ($range_begin !== null) {
                 $options = array(OssClient::OSS_RANGE => $range_begin . '-' . $range_end);
             }
-            return $this->oss->getObject($this->bucket, $object, $options);
+            return $this->getInternalOssClient()->getObject($this->bucket, $object, $options);
         } catch (Exception $exception) {
             return false;
         }
@@ -113,7 +142,7 @@ class AliyunOSSLibrary
             ];
             while (true) {
                 //Sizuka::log(LibLog::LOG_INFO,'SEARCH option',$option);
-                $result = $this->oss->listObjects($this->bucket, $option);
+                $result = $this->getInternalOssClient()->listObjects($this->bucket, $option);
                 $object_list = $result->getObjectList();
                 if (empty($object_list)) {
                     //Sizuka::log(LibLog::LOG_INFO,"object list empty, break");
@@ -175,7 +204,7 @@ class AliyunOSSLibrary
             throw new Exception("It has been eaten by Giant Salamander!", 404);
         }
 
-        $meta = $this->oss->getObjectMeta($this->bucket, $object);
+        $meta = $this->getInternalOssClient()->getObjectMeta($this->bucket, $object);
 
         Ark()->logger('proxy')->info("meta of object: " . $object, ['meta' => $meta]);
 
@@ -278,7 +307,7 @@ class AliyunOSSLibrary
         if (!$this->doesObjectExist($object)) {
             throw new Exception("It has been eaten by Giant Salamander!", 404);
         }
-        $meta = $this->oss->getObjectMeta($this->bucket, $object);
+        $meta = $this->getInternalOssClient()->getObjectMeta($this->bucket, $object);
 
         Ark()->logger('proxy')->info("meta of object: " . $object, ['meta' => $meta]);
 
@@ -357,19 +386,13 @@ class AliyunOSSLibrary
         echo $seconds;
     }
 
-    public function getObjectMeta(string $object)
-    {
-        return $this->oss->getObjectMeta($this->bucket, $object);
-    }
-
     /**
      * @param string $object
-     * @param int $timeout
-     * @return string
+     * @return array
      * @throws OssException
      */
-    public function getSignedUrl(string $object, $timeout = 600)
+    public function getObjectMeta(string $object)
     {
-        return $this->oss->signUrl($this->bucket, $object, $timeout);
+        return $this->getInternalOssClient()->getObjectMeta($this->bucket, $object);
     }
 }

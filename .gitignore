@@ -1,6 +1,7 @@
 vendor/
 /config/config.php
-/.htaccess
+/src/.htaccess
+/src/.htaccess
 /debug/
 /log/
 /cache/
