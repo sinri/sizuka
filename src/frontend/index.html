@@ -106,14 +106,14 @@
                                         <p>Size: {{opened_object_meta['computed_size']}}</p>
                                         <p>
                                             URL:
-                                            <a :href="opened_object_meta?.info?.url">
-                                                <template v-if="opened_object_meta?.info?.url.length>60">
-                                                    {{opened_object_meta.info.url.substr(0,30)}}
+                                            <a :href="opened_object_meta?.signed_url_for_public">
+                                                <template v-if="opened_object_meta?.signed_url_for_public?.length>60">
+                                                    {{opened_object_meta.signed_url_for_public.substr(0,30)}}
                                                     ...
-                                                    {{opened_object_meta.info.url.substr(-30)}}
+                                                    {{opened_object_meta.signed_url_for_public.substr(-30)}}
                                                 </template>
                                                 <template v-else>
-                                                    {{opened_object_meta?.info?.url}}
+                                                    {{opened_object_meta?.signed_url_for_public}}
                                                 </template>
                                             </a>
                                         </p>
@@ -125,8 +125,8 @@
                             </Row>
                         </div>
                         <div slot="extra">
-                            <i-button type="ghost" icon="ios-cloud-download" @click="open_download_directly">Download
-                            </i-button>
+                            <!--                            <i-button type="ghost" icon="ios-cloud-download" @click="open_download_directly">Download-->
+                            <!--                            </i-button>-->
                             <i-button type="ghost" icon="share" @click="open_sharable_page">Sharable Page</i-button>
                             <i-button type="ghost" icon="arrow-expand" @click.prevent="open_content">Open in new tab!
                             </i-button>
@@ -272,6 +272,7 @@
                             meta['computed_size'] = meta['content-length'] + "Bytes";
                         }
                         meta['local_time'] = (new Date(meta['date'])).toLocaleString();
+                        meta['signed_url_for_public'] = res.data.data.signed_url;
 
                         this.opened_object_meta = meta
                         this.message = '';

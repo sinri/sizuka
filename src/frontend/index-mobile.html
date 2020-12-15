@@ -4,8 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>{{site_title}}</title>
-    <script src="//unpkg.com/vue@2.5.16/dist/vue.js"></script>
-    <script src="//unpkg.com/axios@0.18.0/dist/axios.js"></script>
+    <!--    <script src="//unpkg.com/vue@2.5.16/dist/vue.js"></script>-->
+    <!--    <script src="//unpkg.com/axios@0.18.0/dist/axios.js"></script>-->
+    <script src="static/vue-2.5.13.js"></script>
+    <script src="static/axios.js"></script>
     <script src="static/js.cookie.min.js"></script>
 
     <!-- import stylesheet -->
@@ -122,6 +124,7 @@
                             this.is_public = true;
                         }
                         this.site_title = res.data.data.site_title;
+                        document.title = this.site_title
                     }
                     if (this.token_written) {
                         this.explore();
