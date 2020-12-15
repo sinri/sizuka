@@ -5,26 +5,8 @@
     <option name="CUSTOM_SCOPE_NAME" value="Unnamed" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4172fcfa-23fb-413b-b126-18f7b3077c1e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/leqee.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsonSchemas.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/scopes/Unnamed.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/scopes/Unnamed.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sizuka.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sizuka.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sizuka.php" beforeDir="false" afterPath="$PROJECT_DIR$/Sizuka.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/autoload.php" beforeDir="false" afterPath="$PROJECT_DIR$/autoload.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.phar" beforeDir="false" afterPath="$PROJECT_DIR$/composer.phar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.sample.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.sample.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/Api.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/Api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/AliyunOSSLibrary.php" beforeDir="false" afterPath="$PROJECT_DIR$/library/AliyunOSSLibrary.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/OSSObjectTreeNode.php" beforeDir="false" afterPath="$PROJECT_DIR$/library/OSSObjectTreeNode.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/SizukaMiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/SizukaMiddleware.php" afterDir="false" />
+    <list default="true" id="4172fcfa-23fb-413b-b126-18f7b3077c1e" name="Default Changelist" comment="refine">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +50,9 @@
       <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
     </include_path>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
+  </component>
   <component name="ProjectId" id="1ldlvtR8Uu5mGMjO1TfcifPiQdk" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
@@ -100,12 +85,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1607935082512</updated>
-      <workItem from="1607935083720" duration="15966000" />
+      <workItem from="1607935083720" duration="16961000" />
     </task>
+    <task id="LOCAL-00001" summary="refine">
+      <created>1608004724567</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1608004724567</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UpdateCopyrightCheckinHandler">
+    <option name="UPDATE_COPYRIGHT" value="true" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -117,6 +113,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="refine" />
+    <option name="LAST_COMMIT_MESSAGE" value="refine" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
