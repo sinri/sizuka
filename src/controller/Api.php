@@ -14,6 +14,7 @@ use Parsedown;
 use sinri\ark\core\ArkHelper;
 use sinri\ark\web\implement\ArkWebController;
 use sinri\sizuka\library\AliyunOSSLibrary;
+use TypeError;
 
 class Api extends ArkWebController
 {
@@ -145,12 +146,14 @@ class Api extends ArkWebController
                     $previewUrl = "./showRenderedMarkdown?src=" . urlencode($url);
                     break;
                 default:
-                    $previewUrl = Ark()->readConfig(["gateway"]) . "/proxy/" . $object;
-                    break;
+                    // $previewUrl = Ark()->readConfig(["gateway"]) . "/proxy/" . $object;
+                    throw new TypeError('The object is not preview-able: ' . $object);
             }
 
             header("Location: " . $previewUrl);
             //$this->_sayOK($previewUrl);
+        } catch (TypeError $typeError) {
+            echo $typeError->getMessage();
         } catch (Exception $exception) {
             $this->_sayFail($exception->getMessage());
         }
