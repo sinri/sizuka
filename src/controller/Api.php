@@ -197,7 +197,12 @@ class Api extends ArkWebController
             $meta = $lib->getObjectMeta($object);
             $signed_url = $lib->objectDownloadURL($object, $lifetime);
 
-            $this->_sayOK(['meta' => $meta, 'object' => $object, 'signed_url' => $signed_url]);
+            $this->_sayOK([
+                'meta' => $meta,
+                'object' => $object,
+                'object_original_name' => basename($object),
+                'signed_url' => $signed_url,
+            ]);
         } catch (Exception $exception) {
             $this->_sayFail($exception->getMessage());
         }
