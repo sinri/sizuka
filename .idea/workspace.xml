@@ -5,9 +5,7 @@
     <option name="CUSTOM_SCOPE_NAME" value="Unnamed" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4172fcfa-23fb-413b-b126-18f7b3077c1e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="4172fcfa-23fb-413b-b126-18f7b3077c1e" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,7 +90,7 @@
       <updated>1607935082512</updated>
       <workItem from="1607935083720" duration="19569000" />
       <workItem from="1608012586520" duration="526000" />
-      <workItem from="1615188517752" duration="1465000" />
+      <workItem from="1615188517752" duration="1796000" />
     </task>
     <task id="LOCAL-00001" summary="refine">
       <created>1608004724567</created>
@@ -122,7 +120,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615189870109</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fix">
+      <created>1615190403756</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1615190403756</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,7 +157,8 @@
     <MESSAGE value="reorganize" />
     <MESSAGE value="refine page" />
     <MESSAGE value="wget" />
-    <option name="LAST_COMMIT_MESSAGE" value="wget" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
